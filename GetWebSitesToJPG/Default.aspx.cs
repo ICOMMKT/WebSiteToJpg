@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 using System.Web.Services;
 using System.Web.UI;
 
-namespace WebPageToJPG
+namespace GetWebSitesToJPG
 {
     public partial class _Default : Page
     {
@@ -19,12 +19,12 @@ namespace WebPageToJPG
         {
             //using (var client = new WebClient())
             //{
-              //  string webPage = client.DownloadString("http://movistar.com.ve");
-                // TODO: do something with the downloaded result from the remote
-                // web site
-               //var webPage = ReadTextFromUrl("http://www.mercantilbanco.com/mercprod/index.html");
+            //  string webPage = client.DownloadString("http://movistar.com.ve");
+            // TODO: do something with the downloaded result from the remote
+            // web site
+            //var webPage = ReadTextFromUrl("http://www.mercantilbanco.com/mercprod/index.html");
             //var listImages = GetImagesInHTMLString(webPage);
-                //iresult.InnerHtml = webPage;
+            //iresult.InnerHtml = webPage;
             //}*/
         }
 
@@ -57,12 +57,12 @@ namespace WebPageToJPG
 
         protected void Preview_Gen_Click(object sender, EventArgs e)
         {
-            /*var url = txtUrl.Text;
+            var url = txtUrl.Text;
             Bitmap img = ImageUtil.GetWebSiteScreenCapture(url, 1024, 768);
             string path = Server.MapPath("Content/Images/Screenshots");
             path = path + "\\file1.jpg";
-            img.Save(path);*/
- 
+            img.Save(path);
+
             imgPreview.Src = "Content/Images/Screenshots/file1.jpg";
             //ImgUrl = "Content/Images/Screenshots/file1.jpg";
         }
@@ -73,8 +73,8 @@ namespace WebPageToJPG
             var newImg = x;
             Rectangle rect = new Rectangle
             {
-                Width =  (int) width,
-                Height = (int) height
+                Width = (int)width,
+                Height = (int)height
             };
             var page = new _Default();
             var bitmap = page.CreateBitmap();
