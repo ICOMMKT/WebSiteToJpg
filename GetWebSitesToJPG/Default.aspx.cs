@@ -1,4 +1,5 @@
 ﻿using iComMkt.Generic.Logic;
+
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Services;
 using System.Web.UI;
+using System.Windows.Forms;
 
 namespace GetWebSitesToJPG
 {
@@ -53,11 +55,11 @@ namespace GetWebSitesToJPG
         protected void Preview_Gen_Click(object sender, EventArgs e)
         {
             var url = txtUrl.Text;
-            Bitmap img = ImageUtil.GetWebSiteScreenCapture(url, 1024, 768);
+            Bitmap img = ImageUtil.GetWebSiteScreenCapture(url);//, 1024, 768);
             string path = Server.MapPath("Content/Images/Screenshots");
             path = path + "\\file1.jpg";
             img.Save(path);
-
+            
             imgPreview.Src = "Content/Images/Screenshots/file1.jpg";
             //ImgUrl = "Content/Images/Screenshots/file1.jpg";
         }

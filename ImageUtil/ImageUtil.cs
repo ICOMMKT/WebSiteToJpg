@@ -147,7 +147,14 @@ namespace iComMkt.Generic.Logic
 
                 m_BrowserHeight = (m_WebBrowser.Document.Body.ScrollRectangle.Height < m_BrowserHeight) ? m_WebBrowser.Document.Body.ScrollRectangle.Height : m_BrowserHeight;
                 */
-                m_WebBrowser.ClientSize = new Size(this.m_BrowserWidth, this.m_BrowserHeight);
+                int scrollWidth = 0;
+                int scrollHeight = 0;
+
+                scrollHeight = m_WebBrowser.Document.Body.ScrollRectangle.Height;
+                scrollWidth = m_WebBrowser.Document.Body.ScrollRectangle.Width;
+                m_WebBrowser.Size = new Size(scrollWidth, scrollHeight);
+
+                //m_WebBrowser.ClientSize = new Size(this.m_BrowserWidth, this.m_BrowserHeight);
                 m_WebBrowser.ScrollBarsEnabled = false;
                 m_WebBrowser.ScriptErrorsSuppressed = true;
                 m_Bitmap = new Bitmap(m_WebBrowser.Bounds.Width, m_WebBrowser.Bounds.Height);
