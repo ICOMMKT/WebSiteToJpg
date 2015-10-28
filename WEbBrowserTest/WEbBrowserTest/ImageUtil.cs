@@ -130,7 +130,7 @@ namespace iComMkt.Generic.Logic
                 m_WebBrowser.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(WebBrowser_DocumentCompleted);
                 //m_WebBrowser.ProgressChanged += new WebBrowserProgressChangedEventHandler(WebBrowser_ProgressChanged);
                 m_WebBrowser.Navigate(m_Url);
-                while (m_WebBrowser.ReadyState != WebBrowserReadyState.Complete)// && (!bLoaded))/* && (DateTime.Now.Subtract(dt).Minutes < 1))*/
+                while ((!bLoaded) && m_WebBrowser.ReadyState != WebBrowserReadyState.Complete)) //&& (!bLoaded))/* && (DateTime.Now.Subtract(dt).Minutes < 1))*/
                 {
                     Application.DoEvents();
                 }
@@ -150,21 +150,31 @@ namespace iComMkt.Generic.Logic
 
                 m_BrowserHeight = (m_WebBrowser.Document.Body.ScrollRectangle.Height < m_BrowserHeight) ? m_WebBrowser.Document.Body.ScrollRectangle.Height : m_BrowserHeight;
                 */
-                int scrollWidth = 0;
-                int scrollHeight = 0;
+                /*if (!(m_Url.StartsWith("http://") || m_Url.StartsWith("https://")))
+                {
+                    // in AJAX     
+                }
+                if (e.Url.AbsolutePath != m_WebBrowser.Url.AbsolutePath)
+                {
+                    // IFRAME           
+                }
+                else
+                {*/
+                    int scrollWidth = 0;
+                    int scrollHeight = 0;
 
-                scrollHeight = m_WebBrowser.Document.Body.ScrollRectangle.Height;
-                scrollWidth = m_WebBrowser.Document.Body.ScrollRectangle.Width;
-                m_WebBrowser.Size = new Size(scrollWidth, scrollHeight);
+                    scrollHeight = m_WebBrowser.Document.Body.ScrollRectangle.Height;
+                    scrollWidth = m_WebBrowser.Document.Body.ScrollRectangle.Width;
+                    m_WebBrowser.Size = new Size(scrollWidth, scrollHeight);
 
-                //m_WebBrowser.ClientSize = new Size(this.m_BrowserWidth, this.m_BrowserHeight);
-                m_WebBrowser.ScrollBarsEnabled = false;
-                m_WebBrowser.ScriptErrorsSuppressed = true;
-                m_Bitmap = new Bitmap(m_WebBrowser.Bounds.Width, m_WebBrowser.Bounds.Height);
-                m_WebBrowser.BringToFront();
-                m_WebBrowser.DrawToBitmap(m_Bitmap, m_WebBrowser.Bounds);
-                bLoaded = true;
-                
+                    //m_WebBrowser.ClientSize = new Size(this.m_BrowserWidth, this.m_BrowserHeight);
+                    m_WebBrowser.ScrollBarsEnabled = false;
+                    m_WebBrowser.ScriptErrorsSuppressed = true;
+                    m_Bitmap = new Bitmap(m_WebBrowser.Bounds.Width, m_WebBrowser.Bounds.Height);
+                    m_WebBrowser.BringToFront();
+                    m_WebBrowser.DrawToBitmap(m_Bitmap, m_WebBrowser.Bounds);
+                    bLoaded = true;
+                //}
                 //m_Bitmap = (Bitmap)m_Bitmap.GetThumbnailImage(m_ThumbnailWidth, m_ThumbnailHeight, null, IntPtr.Zero);
             }
 
