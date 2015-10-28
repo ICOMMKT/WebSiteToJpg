@@ -195,6 +195,10 @@ namespace iComMkt.Generic.Logic
 
                 scrollHeight = m_WebBrowser.Document.Body.ScrollRectangle.Height;
                 scrollWidth = m_WebBrowser.Document.Body.ScrollRectangle.Width;
+                if(scrollWidth < 768)
+                {
+                    scrollWidth = 1024;
+                }
                 m_WebBrowser.Size = new Size(scrollWidth, scrollHeight);
 
                 //m_WebBrowser.ClientSize = new Size(this.m_BrowserWidth, this.m_BrowserHeight);
