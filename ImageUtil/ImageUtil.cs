@@ -61,6 +61,8 @@ namespace iComMkt.Generic.Logic
         private class WebsiteThumbnailImage
         {
             public Boolean bLoaded = false;
+            public bool isLazyMan = default(bool);
+            private int iframe_counter = 0;
             /*public DateTime dt = DateTime.Now;*/
 
             public WebsiteThumbnailImage(string Url, int BrowserWidth, int BrowserHeight)
@@ -111,6 +113,8 @@ namespace iComMkt.Generic.Logic
                 set { m_ThumbnailHeight = value; }
             }
 
+            
+
             public Bitmap GenerateWebSiteThumbnailImage()
             {
                 Thread m_thread = new Thread(new ThreadStart(_GenerateWebSiteThumbnailImage));
@@ -125,16 +129,24 @@ namespace iComMkt.Generic.Logic
                 WebBrowser m_WebBrowser = new WebBrowser();
                 m_WebBrowser.ScrollBarsEnabled = false;
                 m_WebBrowser.ScriptErrorsSuppressed = true;
-                /*m_WebBrowser.Navigating += new WebBrowserNavigatingEventHandler(WebBrowser_Navigating);
-                m_WebBrowser.ProgressChanged += new WebBrowserProgressChangedEventHandler(WebBrowser_ProgressChanged);*/
+                m_WebBrowser.Navigating += new WebBrowserNavigatingEventHandler(WebBrowser_Navigating);
+                //m_WebBrowser.ProgressChanged += new WebBrowserProgressChangedEventHandler(WebBrowser_ProgressChanged);*/
                 m_WebBrowser.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(WebBrowser_DocumentCompleted);
                 //m_WebBrowser.ProgressChanged += new WebBrowserProgressChangedEventHandler(WebBrowser_ProgressChanged);
                 m_WebBrowser.Navigate(m_Url);
-                while (m_WebBrowser.ReadyState != WebBrowserReadyState.Complete)// && (!bLoaded))/* && (DateTime.Now.Subtract(dt).Minutes < 1))*/
-                {
-                    Application.DoEvents();
-                }
-                m_WebBrowser.Dispose();
+                waitPolice();
+            }
+
+            public void waitPolice()
+            {
+                while (isLazyMan) Application.DoEvents();
+            }
+
+            private void WebBrowser_Navigating(object sender, WebBrowserNavigatingEventArgs e)
+            {
+                //if (!e.TargetFrameName.Equals(""))
+                 //   iframe_counter--;
+                isLazyMan = true;
             }
 
             void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
@@ -142,6 +154,25 @@ namespace iComMkt.Generic.Logic
                 //Thread.Sleep(50000);
                 WebBrowser m_WebBrowser = (WebBrowser)sender;
 
+                var framesCount = m_WebBrowser.Document.Window.Frames.Count;
+
+                 string url = e.Url.ToString();
+                if (!(url.StartsWith("http://") || url.StartsWith("https://")))
+                {
+                    // in AJAX
+                }
+
+                if (e.Url.AbsolutePath != m_WebBrowser.Url.AbsolutePath)
+                {
+                    iframe_counter++;
+                }
+
+                if (framesCount <= iframe_counter)
+                {
+                    DocumentCompletedFully(m_WebBrowser, e);
+                    isLazyMan = false;
+                }
+                
                 /*if (m_WebBrowser.Document.Body.ScrollRectangle.Width < m_BrowserWidth)
                 {
                     m_BrowserHeight = m_WebBrowser.Document.Body.ScrollRectangle.Width * m_BrowserHeight / m_BrowserWidth;
@@ -150,6 +181,15 @@ namespace iComMkt.Generic.Logic
 
                 m_BrowserHeight = (m_WebBrowser.Document.Body.ScrollRectangle.Height < m_BrowserHeight) ? m_WebBrowser.Document.Body.ScrollRectangle.Height : m_BrowserHeight;
                 */
+
+                //m_Bitmap = (Bitmap)m_Bitmap.GetThumbnailImage(m_ThumbnailWidth, m_ThumbnailHeight, null, IntPtr.Zero);
+            }
+
+            private void DocumentCompletedFully(WebBrowser sender, WebBrowserDocumentCompletedEventArgs e)
+            {
+
+                WebBrowser m_WebBrowser = (WebBrowser)sender;
+
                 int scrollWidth = 0;
                 int scrollHeight = 0;
 
@@ -164,10 +204,7 @@ namespace iComMkt.Generic.Logic
                 m_WebBrowser.BringToFront();
                 m_WebBrowser.DrawToBitmap(m_Bitmap, m_WebBrowser.Bounds);
                 bLoaded = true;
-                
-                //m_Bitmap = (Bitmap)m_Bitmap.GetThumbnailImage(m_ThumbnailWidth, m_ThumbnailHeight, null, IntPtr.Zero);
             }
-
             /*private void WebBrowser_ProgressChanged(System.Object sender, System.Windows.Forms.WebBrowserProgressChangedEventArgs e)
             {
                 WebBrowser m_WebBrowser = (WebBrowser)sender;
