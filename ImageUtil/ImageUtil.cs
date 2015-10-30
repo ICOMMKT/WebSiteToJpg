@@ -62,6 +62,8 @@ namespace iComMkt.Generic.Logic
         {
             public Boolean bLoaded = false;
             public bool isLazyMan = default(bool);
+            private int min_frames = int.MaxValue;
+            private int max_height = 0;
             private int iframe_counter = 0;
             /*public DateTime dt = DateTime.Now;*/
 
@@ -113,7 +115,7 @@ namespace iComMkt.Generic.Logic
                 set { m_ThumbnailHeight = value; }
             }
 
-            
+
 
             public Bitmap GenerateWebSiteThumbnailImage()
             {
@@ -144,45 +146,47 @@ namespace iComMkt.Generic.Logic
 
             private void WebBrowser_Navigating(object sender, WebBrowserNavigatingEventArgs e)
             {
-                //if (!e.TargetFrameName.Equals(""))
-                 //   iframe_counter--;
-                isLazyMan = true;
+                if (!bLoaded)
+                {
+                    isLazyMan = true;
+                }
             }
 
             void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
             {
-                //Thread.Sleep(50000);
                 WebBrowser m_WebBrowser = (WebBrowser)sender;
 
                 var framesCount = m_WebBrowser.Document.Window.Frames.Count;
+                var height = m_WebBrowser.Document.Body.ScrollRectangle.Height;
+                if (height > max_height)
+                {
+                    max_height = height;
+                }
 
-                 string url = e.Url.ToString();
+                if (framesCount < min_frames)
+                {
+                    min_frames = framesCount;
+                }
+                bool inAjax = default(bool);
+                string url = e.Url.ToString();
+
                 if (!(url.StartsWith("http://") || url.StartsWith("https://")))
                 {
-                    // in AJAX
+                    inAjax = true;
                 }
-
-                if (e.Url.AbsolutePath != m_WebBrowser.Url.AbsolutePath)
+                if (!inAjax)
                 {
-                    iframe_counter++;
+                    if (e.Url.AbsolutePath != m_WebBrowser.Url.AbsolutePath)
+                    {
+                        iframe_counter++;
+                    }
                 }
-
-                if (framesCount <= iframe_counter)
+                if (min_frames <= iframe_counter && (!inAjax))
                 {
                     DocumentCompletedFully(m_WebBrowser, e);
                     isLazyMan = false;
+                    bLoaded = true;
                 }
-                
-                /*if (m_WebBrowser.Document.Body.ScrollRectangle.Width < m_BrowserWidth)
-                {
-                    m_BrowserHeight = m_WebBrowser.Document.Body.ScrollRectangle.Width * m_BrowserHeight / m_BrowserWidth;
-                    m_BrowserWidth = m_WebBrowser.Document.Body.ScrollRectangle.Width;
-                }
-
-                m_BrowserHeight = (m_WebBrowser.Document.Body.ScrollRectangle.Height < m_BrowserHeight) ? m_WebBrowser.Document.Body.ScrollRectangle.Height : m_BrowserHeight;
-                */
-
-                //m_Bitmap = (Bitmap)m_Bitmap.GetThumbnailImage(m_ThumbnailWidth, m_ThumbnailHeight, null, IntPtr.Zero);
             }
 
             private void DocumentCompletedFully(WebBrowser sender, WebBrowserDocumentCompletedEventArgs e)
@@ -194,8 +198,12 @@ namespace iComMkt.Generic.Logic
                 int scrollHeight = 0;
 
                 scrollHeight = m_WebBrowser.Document.Body.ScrollRectangle.Height;
+                if (scrollHeight > 10000)
+                {
+                    scrollHeight = 9999;
+                }
                 scrollWidth = m_WebBrowser.Document.Body.ScrollRectangle.Width;
-                if(scrollWidth < 768)
+                if (scrollWidth < 768)
                 {
                     scrollWidth = 1024;
                 }
@@ -209,20 +217,8 @@ namespace iComMkt.Generic.Logic
                 m_WebBrowser.DrawToBitmap(m_Bitmap, m_WebBrowser.Bounds);
                 bLoaded = true;
             }
-            /*private void WebBrowser_ProgressChanged(System.Object sender, System.Windows.Forms.WebBrowserProgressChangedEventArgs e)
-            {
-                WebBrowser m_WebBrowser = (WebBrowser)sender;
-                if (DateTime.Now.Subtract(dt).Minutes > 1)
-                {
-                    m_WebBrowser.Stop();
-                    bLoaded = true;
-                }
-            }
-            private void WebBrowser_Navigating(System.Object sender, System.Windows.Forms.WebBrowserNavigatingEventArgs e)
-            {
-                dt = DateTime.Now;
-            }*/
-            //ie.ProgressChanged += new WebBrowserProgressChangedEventHandler(_ie);
+
+            [Obsolete]
             private void WebBrowser_ProgressChanged(object sender, WebBrowserProgressChangedEventArgs e)
             {
                 int max = (int)Math.Max(e.MaximumProgress, e.CurrentProgress);
@@ -247,9 +243,9 @@ namespace iComMkt.Generic.Logic
                     bLoaded = true;
                 }
             }
-            
+
         }
-        
+
         // Resusable flag
         public bool IsReusable
         {
