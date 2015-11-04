@@ -58,9 +58,23 @@ namespace GetWebSitesToJPG
             Bitmap img = ImageUtil.GetWebSiteScreenCapture(url);//, 1024, 768);
             string path = Server.MapPath("Content/Images/Screenshots");
             path = path + "\\file1.jpg";
-            img.Save(path);
-            
-            imgPreview.Src = "Content/Images/Screenshots/file1.jpg";
+            try
+            {
+                img.Save(path);
+            }
+            catch(Exception ex)
+            {
+                lblMsg.Text = "The image can not be loaded, please try again in a few moments.";
+                img.Dispose();
+            }
+            //if(img.Tag != null)
+            //{
+                imgPreview.Src = "Content/Images/Screenshots/file1.jpg";
+            //}
+            //else
+           // {
+              //  lblMsg.Text = "The image can not be loaded, please try again in a few moments.";
+           // }
             //ImgUrl = "Content/Images/Screenshots/file1.jpg";
         }
 

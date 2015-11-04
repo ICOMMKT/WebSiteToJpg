@@ -15,6 +15,7 @@
             <div class="img-preview preview-lg"></div>
         </div>
         <div class="col-sm-6">
+            <asp:Label id="lblMsg" Text="" runat="server" />
             <div class="cont">
                 <img src="" id="imgPreview" runat="server" alt="" />
             </div>
@@ -25,8 +26,10 @@
     <!--<button type="button" id="copy" class="btn btn-primary">Copy</button>-->
     <script>
         var $cropperEl = $('.cont > img').cropper({
-            aspectRatio: NaN,
-            preview: ".img-preview"
+            movable: false,
+            zoomable: true,
+            rotatable: false,
+            scalable: true           
         });
         $('#btnCrop').click(function () {
             var data = $cropperEl.cropper('getData');

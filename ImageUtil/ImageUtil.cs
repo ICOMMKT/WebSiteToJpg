@@ -114,8 +114,8 @@ namespace iComMkt.Generic.Logic
                 get { return m_ThumbnailHeight; }
                 set { m_ThumbnailHeight = value; }
             }
-
-
+            private bool outOfmemory = false;
+            bool firstTime = true;
 
             public Bitmap GenerateWebSiteThumbnailImage()
             {
@@ -129,6 +129,7 @@ namespace iComMkt.Generic.Logic
             private void _GenerateWebSiteThumbnailImage()
             {
                 WebBrowser m_WebBrowser = new WebBrowser();
+                m_Bitmap = new Bitmap(100, 100);
                 m_WebBrowser.ScrollBarsEnabled = false;
                 m_WebBrowser.ScriptErrorsSuppressed = true;
                 m_WebBrowser.Navigating += new WebBrowserNavigatingEventHandler(WebBrowser_Navigating);
@@ -191,17 +192,17 @@ namespace iComMkt.Generic.Logic
 
             private void DocumentCompletedFully(WebBrowser sender, WebBrowserDocumentCompletedEventArgs e)
             {
-
+                //Thread.Sleep(5000);
                 WebBrowser m_WebBrowser = (WebBrowser)sender;
 
                 int scrollWidth = 0;
                 int scrollHeight = 0;
 
                 scrollHeight = m_WebBrowser.Document.Body.ScrollRectangle.Height;
-                if (scrollHeight > 10000)
-                {
-                    scrollHeight = 9999;
-                }
+                //if (scrollHeight > 10000)
+                //{
+                //    scrollHeight = 9999;
+                //}
                 scrollWidth = m_WebBrowser.Document.Body.ScrollRectangle.Width;
                 if (scrollWidth < 768)
                 {
@@ -212,10 +213,24 @@ namespace iComMkt.Generic.Logic
                 //m_WebBrowser.ClientSize = new Size(this.m_BrowserWidth, this.m_BrowserHeight);
                 m_WebBrowser.ScrollBarsEnabled = false;
                 m_WebBrowser.ScriptErrorsSuppressed = true;
-                m_Bitmap = new Bitmap(m_WebBrowser.Bounds.Width, m_WebBrowser.Bounds.Height);
+                
+                //firstTime = false;
+                //m_Bitmap = new Bitmap(m_WebBrowser.Bounds.Width, m_WebBrowser.Bounds.Height);
                 m_WebBrowser.BringToFront();
-                m_WebBrowser.DrawToBitmap(m_Bitmap, m_WebBrowser.Bounds);
+                try
+                {
+                    m_Bitmap.Dispose();
+                    m_Bitmap = new Bitmap(m_WebBrowser.Bounds.Width, m_WebBrowser.Bounds.Height);
+                    m_WebBrowser.DrawToBitmap(m_Bitmap, m_WebBrowser.Bounds);
+                }
+                catch (Exception ex)
+                {
+                    var exType = ex.GetType();
+                    outOfmemory = true;
+                }
                 bLoaded = true;
+
+
             }
 
             [Obsolete]
