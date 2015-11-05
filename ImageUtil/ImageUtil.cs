@@ -87,6 +87,8 @@ namespace iComMkt.Generic.Logic
                 get { return m_Bitmap; }
             }
 
+            private Bitmap r_Bitmap = null;
+
             private int m_BrowserWidth;
             public int BrowserWidth
             {
@@ -123,7 +125,7 @@ namespace iComMkt.Generic.Logic
                 m_thread.SetApartmentState(ApartmentState.STA);
                 m_thread.Start();
                 m_thread.Join();
-                return m_Bitmap;
+                return r_Bitmap;
             }
 
             private void _GenerateWebSiteThumbnailImage()
@@ -222,6 +224,7 @@ namespace iComMkt.Generic.Logic
                     m_Bitmap.Dispose();
                     m_Bitmap = new Bitmap(m_WebBrowser.Bounds.Width, m_WebBrowser.Bounds.Height);
                     m_WebBrowser.DrawToBitmap(m_Bitmap, m_WebBrowser.Bounds);
+                    r_Bitmap = (Bitmap)m_Bitmap.Clone();
                 }
                 catch (Exception ex)
                 {
@@ -229,8 +232,6 @@ namespace iComMkt.Generic.Logic
                     outOfmemory = true;
                 }
                 bLoaded = true;
-
-
             }
 
             [Obsolete]

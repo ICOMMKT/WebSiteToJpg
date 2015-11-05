@@ -16,31 +16,34 @@ namespace GetWebSitesToJPG
 {
     public partial class _Default : Page
     {
-        //protected string ImgUrl { get; set; }
 
         #region Handlers
 
-        //TODO: This method is no returning anything to the Website - BUG
         /// <summary>
         /// Crop The image from determinated point, width and height.
         /// </summary>
         [WebMethod]
-        public static string CropImage(float x, float y, float width, float height, float rotate, float scaleX, float scaleY)
+        public static string CropImage(float x, float y, float width, float height, float scaleX, float scaleY, string filename)
         {
-            var newImg = x;
             Rectangle rect = new Rectangle
             {
                 Width = (int)width,
                 Height = (int)height
             };
             var page = new _Default();
-            var bitmap = page.CreateBitmap();
+            var bitmap = page.CreateBitmap(filename);
             var imgCropped = cropAtRect(bitmap, rect, x, y);
+
             string path = page.Server.MapPath("Content/Images/Screenshots");
-            path = path + "\\file2.jpg";
+            filename = Regex.Replace(filename, @"\.(jpg)", string.Empty, RegexOptions.IgnoreCase);
+            string newFilename = filename + "_cropped.jpg";
+            path = path + "\\" + newFilename;
+
             imgCropped.Save(path);
-            //"Content/Images/Screenshots/file1.jpg"
             string hello = "Hola Mundo!";
+
+            bitmap.Dispose();
+
             return JsonConvert.SerializeObject(hello);
         }
 
@@ -55,9 +58,16 @@ namespace GetWebSitesToJPG
         protected void Preview_Gen_Click(object sender, EventArgs e)
         {
             var url = txtUrl.Text;
+            Uri uri = new Uri(url);
+            string domain = uri.Host;
+            domain = Regex.Replace(domain, @"^(?:http(?:s)?://)?(?:www(?:[0-9]+)?\.)?", string.Empty, RegexOptions.IgnoreCase);
+            var date = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + "_" + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
+            var filename = domain + "_" + date + ".jpg";
+
             Bitmap img = ImageUtil.GetWebSiteScreenCapture(url);//, 1024, 768);
             string path = Server.MapPath("Content/Images/Screenshots");
-            path = path + "\\file1.jpg";
+            path = path + "\\" + filename;
+
             try
             {
                 img.Save(path);
@@ -67,15 +77,8 @@ namespace GetWebSitesToJPG
                 lblMsg.Text = "The image can not be loaded, please try again in a few moments.";
                 img.Dispose();
             }
-            //if(img.Tag != null)
-            //{
-                imgPreview.Src = "Content/Images/Screenshots/file1.jpg";
-            //}
-            //else
-           // {
-              //  lblMsg.Text = "The image can not be loaded, please try again in a few moments.";
-           // }
-            //ImgUrl = "Content/Images/Screenshots/file1.jpg";
+            imgPreview.Src = "Content/Images/Screenshots/" + filename;
+            img.Dispose();
         }
 
         #endregion
@@ -86,10 +89,10 @@ namespace GetWebSitesToJPG
         /// Recreate a bitmap object from the image Website
         /// </summary>
         /// <returns>Image Website</returns>
-        public Bitmap CreateBitmap()
+        public Bitmap CreateBitmap(string filename)
         {
             string serverPath = Server.MapPath("/Content/Images/Screenshots/");
-            serverPath = serverPath + "file1.jpg";
+            serverPath = serverPath + filename;
             Bitmap image = (Bitmap)Image.FromFile(serverPath, true);
             return image;
         }
@@ -104,36 +107,6 @@ namespace GetWebSitesToJPG
             Graphics g = Graphics.FromImage(nb);
             g.DrawImage(b, -x, -y);
             return nb;
-        }
-
-        [Obsolete]
-        private List<string> GetImagesInHTMLString(string htmlString)
-        {
-            List<string> images = new List<string>();
-            string pattern = @"<(img)\b[^>]*>";
-
-            Regex rgx = new Regex(pattern, RegexOptions.IgnoreCase);
-            MatchCollection matches = rgx.Matches(htmlString);
-
-            for (int i = 0, l = matches.Count; i < l; i++)
-            {
-                images.Add(matches[i].Value);
-            }
-
-            return images;
-        }
-
-        [Obsolete]
-        string ReadTextFromUrl(string url)
-        {
-            // WebClient is still convenient
-            // Assume UTF8, but detect BOM - could also honor response charset I suppose
-            using (var client = new WebClient())
-            using (var stream = client.OpenRead(url))
-            using (var textReader = new StreamReader(stream, Encoding.UTF8, true))
-            {
-                return textReader.ReadToEnd();
-            }
         }
 
         #endregion

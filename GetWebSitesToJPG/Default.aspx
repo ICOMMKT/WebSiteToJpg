@@ -34,6 +34,10 @@
         $('#btnCrop').click(function () {
             var data = $cropperEl.cropper('getData');
             console.log(data);
+            var imgUrl = $('#MainContent_imgPreview').attr('src');
+            var fileNameIndex = imgUrl.lastIndexOf("/") + 1;
+            var filename = imgUrl.substr(fileNameIndex);
+            data.filename = filename;
             data = JSON.stringify(data, null, 2);
             console.log(data);
             /*$.post("Default.aspx/CropImage", data)
@@ -56,44 +60,6 @@
                 console.log(response.d);
             }
         });
-        /*$("iframe").zoomer({
-            zoom: 0.5,
-            width: 200
-        });*/
-        /*$("#copy.btn").click(function () {
-            var iresult = document.getElementById("iresult");
-            html2canvas(iresult, {
-                logging: true,
-                useCORS: true,
-                onrendered: function (canvas) {
-                    document.body.appendChild(canvas);
-                }
-            });
-        });*/
-        /*function LoadImg(imgUrl)
-        {
-            var canvas = document.getElementById('myCanvas');
-            var context = canvas.getContext('2d');
-            var imageObj = new Image();
-
-            imageObj.onload = function() {
-                var sourceWidth = this.width;
-                var sourceHeight = this.height;
-                var destWidth = sourceWidth;
-                var destHeight = sourceHeight;
-                canvas.width = sourceWidth;
-                canvas.height = sourceHeight;
-                context.drawImage(imageObj, 10, 10);
-            };
-            imageObj.src = imgUrl;
-            //imageObj.src = 'http://www.html5canvastutorials.com/demos/assets/darth-vader.jpg';
-        }
-        (function ($) {
-            $(function () {
-                LoadImg('Content/Images/Screenshots/file1.jpg');
-                init2();
-            });
-        })(jQuery);*/
     </script>
 
 </asp:Content>
