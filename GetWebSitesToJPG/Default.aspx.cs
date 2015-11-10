@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -16,7 +17,7 @@ namespace GetWebSitesToJPG
 {
     public partial class _Default : Page
     {
-
+        Uri uri = null;
         #region Handlers
 
         /// <summary>
@@ -58,9 +59,31 @@ namespace GetWebSitesToJPG
         protected void Preview_Gen_Click(object sender, EventArgs e)
         {
             var url = txtUrl.Text;
-            Uri uri = new Uri(url);
+            uri = new Uri(url);
             string domain = uri.Host;
-            domain = Regex.Replace(domain, @"^(?:http(?:s)?://)?(?:www(?:[0-9]+)?\.)?", string.Empty, RegexOptions.IgnoreCase);
+            //domain = Regex.Replace(domain, @"^(?:http(?:s)?://)?(?:www(?:[0-9]+)?\.)?", string.Empty, RegexOptions.IgnoreCase);
+            domain = "http://" + domain;
+            string webpage = GetHTML(url);
+            var doc = new HtmlAgilityPack.HtmlDocument();
+            doc.LoadHtml(webpage);
+            var head = doc.DocumentNode.SelectSingleNode("//head");
+            var baseTag = HtmlAgilityPack.HtmlNode.CreateNode("<base href=\""+ domain +"\">");
+            head.PrependChild(baseTag);
+
+            doc = AssignAsbsoluteUri(doc, "//img", "src");
+            doc = AssignAsbsoluteUri(doc, "//link", "href");
+
+            string path = Server.MapPath("Content/Images/Screenshots");
+            path = path + "\\result.html";
+            doc.Save(path);//webpageurlNext
+           iframeLoader.Visible = true;
+            //iresult.InnerHtml = doc.DocumentNode.InnerHtml;
+
+            /*foreach (Match m in Regex.Matches(webpage, "<head.*>(.*)</head>"))
+            {
+                iresult.InnerText = m.Value;
+            }*/
+            /*
             var date = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + "_" + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
             var filename = domain + "_" + date + ".jpg";
 
@@ -78,12 +101,35 @@ namespace GetWebSitesToJPG
                 img.Dispose();
             }
             imgPreview.Src = "Content/Images/Screenshots/" + filename;
-            img.Dispose();
-        }
+            img.Dispose();*/
+            }
 
         #endregion
-
         #region Methods
+        private HtmlAgilityPack.HtmlDocument AssignAsbsoluteUri(HtmlAgilityPack.HtmlDocument doc, string nodeKind, string attribute)
+        {
+            var nodes = doc.DocumentNode.SelectNodes(nodeKind);
+            if(nodes != null)
+            {
+                foreach (HtmlAgilityPack.HtmlNode img in nodes)
+                {
+                    HtmlAgilityPack.HtmlAttribute att = img.Attributes[attribute];
+                    if (att == null) continue;
+                    string imgUri = att.Value;
+
+                    Uri urlNext = new Uri(imgUri, UriKind.RelativeOrAbsolute);
+
+                    if (!urlNext.IsAbsoluteUri)
+                    {
+                        //var domainUri = new Uri(domain);
+                        urlNext = new Uri(uri, urlNext);
+                        img.Attributes[attribute].Value = urlNext.ToString();
+                    }
+                }
+            }
+
+            return doc;
+        }
 
         /// <summary>
         /// Recreate a bitmap object from the image Website
@@ -107,6 +153,16 @@ namespace GetWebSitesToJPG
             Graphics g = Graphics.FromImage(nb);
             g.DrawImage(b, -x, -y);
             return nb;
+        }
+
+        public string GetHTML(string url)
+        {
+            string webPage = String.Empty;
+            using (var client = new WebClient())
+            {
+                webPage = client.DownloadString(url);
+            }
+            return webPage;
         }
 
         #endregion

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetWebSitesToJPG", "GetWebS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEbBrowserTest", "..\WEbBrowserTest\WEbBrowserTest\WEbBrowserTest.csproj", "{AA76AF95-C3A1-4DCA-8AF2-8899F11580AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetWebSitesWithLogon", "GetWebSitesWithLogon\GetWebSitesWithLogon.csproj", "{324365E2-8A42-4F79-A139-5451D80BB76F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{AA76AF95-C3A1-4DCA-8AF2-8899F11580AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA76AF95-C3A1-4DCA-8AF2-8899F11580AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA76AF95-C3A1-4DCA-8AF2-8899F11580AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{324365E2-8A42-4F79-A139-5451D80BB76F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{324365E2-8A42-4F79-A139-5451D80BB76F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{324365E2-8A42-4F79-A139-5451D80BB76F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{324365E2-8A42-4F79-A139-5451D80BB76F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

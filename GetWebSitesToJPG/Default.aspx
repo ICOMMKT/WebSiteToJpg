@@ -1,9 +1,8 @@
 ﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="GetWebSitesToJPG._Default" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-12">
             <h1>Get Jpg from WebPage</h1>
             <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
             <p><a href="http://www.asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
@@ -14,12 +13,13 @@
             </div>
             <div class="img-preview preview-lg"></div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-12">
             <asp:Label id="lblMsg" Text="" runat="server" />
             <div class="cont">
                 <img src="" id="imgPreview" runat="server" alt="" />
             </div>
             <div id="iresult" runat="server"></div>
+            <iframe runat="server" id="iframeLoader" src="Content/Images/Screenshots/result.html" visible="false" style="width:100%;height:600px"></iframe>
             <!--<canvas id="myCanvas">This text is displayed if your browser does not support HTML5 Canvas.</canvas>-->
         </div>
     </div>
