@@ -38,9 +38,8 @@
                 <asp:ScriptReference Name="WebFormsBundle" />
                 <%--Site Scripts--%>
             </Scripts>
-        </asp:ScriptManager>
-        <script src="Scripts/cropper.min.js"></script>
-
+        </asp:ScriptManager> 
+       <script src="Scripts/cropper_modified.js"></script>
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
