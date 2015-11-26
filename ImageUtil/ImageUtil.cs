@@ -11,14 +11,14 @@ namespace iComMkt.Generic.Logic
     /// </summary>
     public class ImageUtil
     {
-        public static Bitmap GetWebSiteScreenCapture(string pUrl, Nullable<Int32> pSiteWidth, Nullable<Int32> pSiteHeight)
+        public static Bitmap GetWebSiteScreenCapture(string pUrl, Nullable<Int32> pSiteWidth, Nullable<Int32> pSiteHeight, Nullable<Int32> pSiteScroll)
         {
             Bitmap thumb = null;
             string url = null;
             int bw = 800;
             //valor por defeito
             int bh = 600;
-
+            int bScrolly = 0;
             if (pUrl != null)
             {
                 if (pUrl.ToString().ToLower().Contains("http://") || pUrl.ToString().ToLower().Contains("https://"))
@@ -41,20 +41,25 @@ namespace iComMkt.Generic.Logic
                 bh = (Int32)pSiteHeight;
             }
 
+            if (pSiteScroll >= 0)
+            {
+                bScrolly = (Int32)pSiteScroll;
+            }
+
             // return context bitmap
-            thumb = GetWebSiteThumbnail(url, bw, bh);
+            thumb = GetWebSiteThumbnail(url, bw, bh, bScrolly);
 
             return thumb;
         }
 
         public static Bitmap GetWebSiteScreenCapture(string pUrl)
         {
-            return GetWebSiteScreenCapture(pUrl, null, null);
+            return GetWebSiteScreenCapture(pUrl, null, null, null);
         }
 
-        public static Bitmap GetWebSiteThumbnail(string Url, int BrowserWidth, int BrowserHeight)
+        public static Bitmap GetWebSiteThumbnail(string Url, int BrowserWidth, int BrowserHeight, int BrowserScrollY)
         {
-            WebsiteThumbnailImage thumbnailGenerator = new WebsiteThumbnailImage(Url, BrowserWidth, BrowserHeight);
+            WebsiteThumbnailImage thumbnailGenerator = new WebsiteThumbnailImage(Url, BrowserWidth, BrowserHeight, BrowserScrollY);
             return thumbnailGenerator.GenerateWebSiteThumbnailImage();
         }
 
@@ -67,11 +72,12 @@ namespace iComMkt.Generic.Logic
             private int iframe_counter = 0;
             /*public DateTime dt = DateTime.Now;*/
 
-            public WebsiteThumbnailImage(string Url, int BrowserWidth, int BrowserHeight)
+            public WebsiteThumbnailImage(string Url, int BrowserWidth, int BrowserHeight, int BrowserScrollY)
             {
                 this.m_Url = Url;
                 this.m_BrowserWidth = BrowserWidth;
                 this.m_BrowserHeight = BrowserHeight;
+                this.m_ScrollY = BrowserScrollY;
             }
 
             private string m_Url = null;
@@ -103,6 +109,7 @@ namespace iComMkt.Generic.Logic
                 set { m_BrowserHeight = value; }
             }
 
+            private int m_ScrollY;
             private int m_ThumbnailWidth;
             public int ThumbnailWidth
             {
@@ -117,7 +124,7 @@ namespace iComMkt.Generic.Logic
                 set { m_ThumbnailHeight = value; }
             }
             private bool outOfmemory = false;
-            bool firstTime = true;
+            //bool firstTime = true;
 
             public Bitmap GenerateWebSiteThumbnailImage()
             {
@@ -132,7 +139,7 @@ namespace iComMkt.Generic.Logic
             {
                 WebBrowser m_WebBrowser = new WebBrowser();
                 m_Bitmap = new Bitmap(100, 100);
-                m_WebBrowser.ScrollBarsEnabled = false;
+                m_WebBrowser.ScrollBarsEnabled = true;
                 m_WebBrowser.ScriptErrorsSuppressed = true;
                 m_WebBrowser.Navigating += new WebBrowserNavigatingEventHandler(WebBrowser_Navigating);
                 //m_WebBrowser.ProgressChanged += new WebBrowserProgressChangedEventHandler(WebBrowser_ProgressChanged);*/
@@ -160,11 +167,11 @@ namespace iComMkt.Generic.Logic
                 WebBrowser m_WebBrowser = (WebBrowser)sender;
 
                 var framesCount = m_WebBrowser.Document.Window.Frames.Count;
-                var height = m_WebBrowser.Document.Body.ScrollRectangle.Height;
-                if (height > max_height)
-                {
-                    max_height = height;
-                }
+                //var height = m_WebBrowser.Document.Body.ScrollRectangle.Height;
+                //if (height > max_height)
+                //{
+                //    max_height = height;
+                //}
 
                 if (framesCount < min_frames)
                 {
@@ -205,17 +212,26 @@ namespace iComMkt.Generic.Logic
                 //{
                 //    scrollHeight = 9999;
                 //}
-                scrollWidth = m_WebBrowser.Document.Body.ScrollRectangle.Width;
-                if (scrollWidth < 768)
-                {
-                    scrollWidth = 1024;
-                }
+                //scrollWidth = m_WebBrowser.Document.Body.ScrollRectangle.Width;
+                //if (scrollWidth < 768)
+                //{
+                //    scrollWidth = 1024;
+                //}
+                scrollWidth = this.m_BrowserWidth;
+                //scrollHeight = this.m_BrowserHeight;
+
                 m_WebBrowser.Size = new Size(scrollWidth, scrollHeight);
+                if (this.m_ScrollY < 200)
+                {
+                    //this.m_BrowserHeight += this.m_ScrollY;
+                    this.m_ScrollY = 0;
+                }
+                m_WebBrowser.Document.Window.ScrollTo(0, this.m_ScrollY);
 
                 //m_WebBrowser.ClientSize = new Size(this.m_BrowserWidth, this.m_BrowserHeight);
                 m_WebBrowser.ScrollBarsEnabled = false;
                 m_WebBrowser.ScriptErrorsSuppressed = true;
-                
+
                 //firstTime = false;
                 //m_Bitmap = new Bitmap(m_WebBrowser.Bounds.Width, m_WebBrowser.Bounds.Height);
                 m_WebBrowser.BringToFront();
@@ -286,7 +302,7 @@ namespace iComMkt.Generic.Logic
                 th = (Int32)pThumbHeight;
             }
 
-            Bitmap mBitmap = GetWebSiteScreenCapture(pUrl, pSiteWidth, pSiteHeight);
+            Bitmap mBitmap = GetWebSiteScreenCapture(pUrl, pSiteWidth, pSiteHeight, 0);
 
             tw = (tw > mBitmap.Width) ? mBitmap.Width : tw;
 
