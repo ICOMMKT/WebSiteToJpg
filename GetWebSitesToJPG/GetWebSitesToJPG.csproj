@@ -124,6 +124,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="GetImagesRequest.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\cropper.min.js" />
@@ -196,6 +197,13 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GetImagesRequest.aspx.cs">
+      <DependentUpon>GetImagesRequest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GetImagesRequest.aspx.designer.cs">
+      <DependentUpon>GetImagesRequest.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

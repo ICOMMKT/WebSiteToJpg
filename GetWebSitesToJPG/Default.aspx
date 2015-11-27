@@ -20,6 +20,7 @@
         </div>
         <div class="col-sm-12">
             <asp:Label id="lblMsg" Text="" runat="server" />
+            <a id="redirect"  runat="server">Aquiii</a>
             <div class="cont">
                 <img src="" id="imgPreview" runat="server" alt="" />
             </div>

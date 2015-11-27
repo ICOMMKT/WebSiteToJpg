@@ -13,6 +13,12 @@ namespace GetWebSitesToJPG
             var settings = new FriendlyUrlSettings();
             settings.AutoRedirectMode = RedirectMode.Off;
             routes.EnableFriendlyUrls(settings);
+
+            routes.MapPageRoute(
+                "ImageMaskedRoute",
+                "{imageID}",
+                "~/GetImagesRequest.aspx"
+            );
         }
     }
 }

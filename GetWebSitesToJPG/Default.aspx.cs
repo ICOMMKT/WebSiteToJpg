@@ -10,6 +10,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web.Routing;
 using System.Web.Services;
 using System.Web.UI;
 using System.Windows.Forms;
@@ -32,7 +33,6 @@ namespace GetWebSitesToJPG
 
         #region Handlers
 
-
         /// <summary>
         /// Crop The image from determinated point, width and height.
         /// </summary>
@@ -51,12 +51,11 @@ namespace GetWebSitesToJPG
                 var imgCropped = cropAtRect(image.Image, rect, x, y);
 
                 string path = page.Server.MapPath("Content/Images/Screenshots");
-                var filename = Regex.Replace(image.Filename, @"\.(jpg)", string.Empty, RegexOptions.IgnoreCase);
-                string newFilename = filename + "_cropped.jpg";
+                var filename = image.Filename;//Regex.Replace(, @"\.(jpg)", string.Empty, RegexOptions.IgnoreCase);
+                string newFilename = filename + ".jpg";
                 path = path + "\\" + newFilename;
 
                 imgCropped.Save(path);
-
 
                 //bitmap.Dispose();
             }
@@ -66,7 +65,17 @@ namespace GetWebSitesToJPG
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            /*var id = Guid.NewGuid().GetHashCode();
+            RouteValueDictionary parameters = new RouteValueDictionary {
+                {"imageID", id.ToString() } };
 
+            VirtualPathData vpd = RouteTable.Routes.GetVirtualPath(
+              null,
+              "ImageMaskedRoute",
+              parameters);
+
+            // string url = vpd.VirtualPath;
+            redirect.HRef = vpd.VirtualPath;*/
         }
 
         /// <summary>
@@ -190,9 +199,12 @@ namespace GetWebSitesToJPG
 
             domain = Regex.Replace(domain, @"^(?:http(?:s)?://)?(?:www(?:[0-9]+)?\.)?", string.Empty, RegexOptions.IgnoreCase);
             //domain = Regex.Replace(domain, @"^(\.)?", string.Empty);
-            var date = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + "_" + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
-            var filename = domain + "_" + date + ".jpg";
+            //var date = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + "_" + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
+            var filename = Guid.NewGuid().ToString();
+            filename = Regex.Replace(filename, "-", string.Empty, RegexOptions.IgnoreCase);
             image.Filename = filename;
+            filename +=  "_raw.jpg"; ///domain + "_" + date
+            
 
             Bitmap img = ImageUtil.GetWebSiteScreenCapture(url, width, height, scrollY);//, 1024, 768);
             string path = Server.MapPath("Content/Images/Screenshots");
@@ -233,8 +245,8 @@ namespace GetWebSitesToJPG
 
         }*/
         #endregion
-
     }
+    #region HelperClass
     public class ImageReturned
     {
         bool imageLoaded;
@@ -280,4 +292,5 @@ namespace GetWebSitesToJPG
             }
         }
     }
+    #endregion
 }
