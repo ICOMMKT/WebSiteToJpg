@@ -142,10 +142,8 @@ namespace iComMkt.Generic.Logic
                 m_WebBrowser.ScrollBarsEnabled = true;
                 m_WebBrowser.ScriptErrorsSuppressed = true;
                 m_WebBrowser.Navigating += new WebBrowserNavigatingEventHandler(WebBrowser_Navigating);
-                //m_WebBrowser.ProgressChanged += new WebBrowserProgressChangedEventHandler(WebBrowser_ProgressChanged);*/
                 m_WebBrowser.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(WebBrowser_DocumentCompleted);
-                //m_WebBrowser.ProgressChanged += new WebBrowserProgressChangedEventHandler(WebBrowser_ProgressChanged);
-                m_WebBrowser.Navigate(m_Url);
+                m_WebBrowser.Navigate(m_Url,"_self", null, "User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; AS; rv:11.0) like Gecko");
                 waitPolice();
             }
 

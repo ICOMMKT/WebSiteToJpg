@@ -12,7 +12,7 @@ namespace GetWebSitesToJPG
         protected void Page_Load(object sender, EventArgs e)
         {
             var imageId = Page.RouteData.Values["imageID"];
-            lblGetParams.Text = imageId == null ? "Aqui no llego nada" : imageId.ToString(); ;
+            lblGetParams.Text = imageId == null ? "Aqui no llego nada" : imageId.ToString(); 
         }
     }
 }

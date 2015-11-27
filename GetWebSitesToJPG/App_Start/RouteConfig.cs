@@ -14,11 +14,7 @@ namespace GetWebSitesToJPG
             settings.AutoRedirectMode = RedirectMode.Off;
             routes.EnableFriendlyUrls(settings);
 
-            routes.MapPageRoute(
-                "ImageMaskedRoute",
-                "{imageID}",
-                "~/GetImagesRequest.aspx"
-            );
+            routes.Add(new Route("{imageID}", new RouteHandler()));
         }
     }
 }

@@ -10,6 +10,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Routing;
 using System.Web.Services;
 using System.Web.UI;
@@ -51,7 +52,7 @@ namespace GetWebSitesToJPG
                 var imgCropped = cropAtRect(image.Image, rect, x, y);
 
                 string path = page.Server.MapPath("Content/Images/Screenshots");
-                var filename = image.Filename;//Regex.Replace(, @"\.(jpg)", string.Empty, RegexOptions.IgnoreCase);
+                var filename = image.Filename;
                 string newFilename = filename + ".jpg";
                 path = path + "\\" + newFilename;
 
@@ -59,8 +60,11 @@ namespace GetWebSitesToJPG
 
                 //bitmap.Dispose();
             }
-            string hello = "Hola Mundo!";
-            return JsonConvert.SerializeObject(hello);
+            //var uri = new Uri(url);
+            var currentUrl = HttpContext.Current.Request.Url;
+            string urlGenerated = currentUrl.Scheme + "://"+ currentUrl.Authority + "/" + image.Filename;
+
+            return urlGenerated;
         }
 
         protected void Page_Load(object sender, EventArgs e)

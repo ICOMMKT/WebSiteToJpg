@@ -1,6 +1,18 @@
 ﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="GetWebSitesToJPG._Default"  Async="true" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+    <!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Image URL</h4>
+      </div>
+      <div class="modal-body"></div>
+    </div>
+  </div>
+</div>
     <div class="row">
         <div class="col-sm-12">
             <h1>Get Jpg from WebPage</h1>
@@ -114,15 +126,17 @@
                 data: data,
                 contentType: "application/json;",
                 dataType: "json",
-                successs: OnSuccess,
-                error: onError
+            }).done(function (data) {
+                console.log(data.d);
+                var $a = $('<a></a>', {
+                    href: data.d,
+                    text: data.d,
+                    target: "_blank"
+                });
+                $('#myModal .modal-body').append($a);
+                $('#myModal').modal();
+                //alert(data.d);
             });
-            function OnSuccess(response) {
-                console.log(response.d);
-            }
-            function onError(response) {
-                console.log(response.d);
-            }
         });
     </script>
 
