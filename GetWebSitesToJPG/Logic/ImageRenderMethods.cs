@@ -13,7 +13,7 @@ namespace GetWebSitesToJPG.Logic
         /// Navigate and return image cropped
         /// </summary>
         /// <param name="imgData">image object data</param>
-        /// <returns>Web page image cropped</returns>
+        /// <returns>Web page image cropped.</returns>
         public static Bitmap GetWebsiteImage(ImageCropData imgData)
         {
             var width = imgData.Width;
