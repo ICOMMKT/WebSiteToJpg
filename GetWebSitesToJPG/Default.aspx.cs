@@ -1,20 +1,13 @@
 ﻿using iComMkt.Generic.Logic;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Web;
-using System.Web.Routing;
 using System.Web.Services;
 using System.Web.UI;
-using System.Windows.Forms;
+using GetWebSitesToJPG.Logic;
+using GetWebSitesToJPG.Models;
 
 namespace GetWebSitesToJPG
 {
@@ -40,13 +33,13 @@ namespace GetWebSitesToJPG
         [WebMethod]
         public static string CropImage(float x, float y, float width, float height, string url, float containerWidth)// float scaleX, float scaleY, string filename)
         {
-            Rectangle rect = new Rectangle
-            {
-                Width = (int)width,
-                Height = (int)height
-            };
-            var page = new _Default();
-            var image = page.GetWebsiteImage(url, (int)containerWidth, (int)height, (int)y);
+            //Rectangle rect = new Rectangle
+            //{
+            //    Width = (int)width,
+            //    Height = (int)height
+            //};
+           // var page = new _Default();
+            /*var image = page.GetWebsiteImage(url, (int)containerWidth, (int)height, (int)y);
             if (image.ImageLoaded)
             {
                 var imgCropped = cropAtRect(image.Image, rect, x, y);
@@ -56,30 +49,38 @@ namespace GetWebSitesToJPG
                 string newFilename = filename + ".jpg";
                 path = path + "\\" + newFilename;
 
-                imgCropped.Save(path);
+                imgCropped.Save(pathuri
 
                 //bitmap.Dispose();
             }
-            //var uri = new Uri(url);
+            //var new =  Uri(url);
+            
+            */
+            var imageId = Guid.NewGuid().ToString();
+            imageId = Regex.Replace(imageId, "-", string.Empty, RegexOptions.IgnoreCase);
             var currentUrl = HttpContext.Current.Request.Url;
-            string urlGenerated = currentUrl.Scheme + "://"+ currentUrl.Authority + "/" + image.Filename;
+            string urlGenerated = currentUrl.Scheme + "://"+ currentUrl.Authority + "/" + imageId;
+
+            using (ImageDBActions newImgToDB = new ImageDBActions())
+            {
+                var imgData = new ImageCropData {
+                    ImageID = imageId,
+                    X = x,
+                    Y = y,
+                    Url = url,
+                    Width = (int)width,
+                    Height = (int)height,
+                    ContainerWidth = (int)containerWidth
+                };
+                newImgToDB.AddDataToDB(imgData);
+            }
 
             return urlGenerated;
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            /*var id = Guid.NewGuid().GetHashCode();
-            RouteValueDictionary parameters = new RouteValueDictionary {
-                {"imageID", id.ToString() } };
 
-            VirtualPathData vpd = RouteTable.Routes.GetVirtualPath(
-              null,
-              "ImageMaskedRoute",
-              parameters);
-
-            // string url = vpd.VirtualPath;
-            redirect.HRef = vpd.VirtualPath;*/
         }
 
         /// <summary>
@@ -197,13 +198,10 @@ namespace GetWebSitesToJPG
         {
             bool b = false;
             var image = new ImageReturned();
-            //string domain = url;
             uri = new Uri(url);
             string domain = uri.Host;
-
             domain = Regex.Replace(domain, @"^(?:http(?:s)?://)?(?:www(?:[0-9]+)?\.)?", string.Empty, RegexOptions.IgnoreCase);
-            //domain = Regex.Replace(domain, @"^(\.)?", string.Empty);
-            //var date = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + "_" + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
+            
             var filename = Guid.NewGuid().ToString();
             filename = Regex.Replace(filename, "-", string.Empty, RegexOptions.IgnoreCase);
             image.Filename = filename;
@@ -250,6 +248,7 @@ namespace GetWebSitesToJPG
         }*/
         #endregion
     }
+
     #region HelperClass
     public class ImageReturned
     {

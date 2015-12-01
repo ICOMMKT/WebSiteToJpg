@@ -21,7 +21,6 @@
             <div>
                 <asp:Label Text="Write URL:" runat="server" /><asp:TextBox Id="txtUrl" runat="server"></asp:TextBox>
                 <asp:Button Text="Generate Preview" runat="server" class="btn btn-primary" OnClick="Preview_Gen_Click" CausesValidation="true" OnClientClick="ShowGif()"/>
-                <!--<button type="button" id="btnCrop" class="btn btn-default"><i class="fa fa-crop"></i> Crop!</button>-->
                 <button type="button" id="btnActCrop" class="btn btn-default">Activate Cropper</button>
                 <div class="HiddenButtons">
                     <button type="button" id="btnHideCrop" class="btn btn-default"><i class="fa fa-eye-slash"></i></button>
@@ -32,7 +31,6 @@
         </div>
         <div class="col-sm-12">
             <asp:Label id="lblMsg" Text="" runat="server" />
-            <a id="redirect"  runat="server">Aquiii</a>
             <div class="cont">
                 <img src="" id="imgPreview" runat="server" alt="" />
             </div>
@@ -62,27 +60,12 @@
         });
         $('.iframe-holder iframe').load(function () {
             this.style.height = $(this.contentWindow.document).height() + 'px';
-            //if (isVisible) {
-                //var $iframeCloned = $('.iframe-holder iframe').clone();
-                //var styles = {
-               //     width: 0,
-               //     height : 0
-              //  };
-                //styles.width = $(this).parent().width();
-                //styles.height = $(this).parent().height();
-
-               // $iframeCloned.css(styles);
-
-                //$('.cropper-view-box').append($iframeCloned);
-
-            //}
         });
         $('#btnActCrop').click(function () {
-            //$('.shader').width('100%');
             if (isVisible){
                 $('.HiddenButtons').show();
                 var scroll = $('.iframe-holder > iframe').contents().find("body").scrollTop();
-                //if ($cropperEl == null) {
+
                 $cropperEl = $('.iframe-holder > iframe').cropper({
                         movable: false,
                         zoomable: false,
@@ -90,10 +73,6 @@
                         scalable: false
                 });
                 var canvasData = $cropperEl.cropper('getCropBoxData');
-                //}
-                //else {
-               //     $cropperEl.cropper('crop');
-               // }
             }
             else{
                 alert('you must genereate a preview');
@@ -114,10 +93,6 @@
             console.log(data);
             var txt_url = $('#MainContent_txtUrl').val();
             data.url = txt_url;
-            //var imgUrl = $('#MainContent_imgPreview').attr('src');
-            //var fileNameIndex = imgUrl.lastIndexOf("/") + 1;
-            //var filename = imgUrl.substr(fileNameIndex);
-            //data.filename = filename;
             data = JSON.stringify(data, null, 2);
             console.log(data);
             $.ajax({
@@ -133,6 +108,7 @@
                     text: data.d,
                     target: "_blank"
                 });
+                $('#myModal .modal-body').empty();
                 $('#myModal .modal-body').append($a);
                 $('#myModal').modal();
                 //alert(data.d);
