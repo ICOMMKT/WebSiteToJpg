@@ -1,6 +1,4 @@
-﻿using iComMkt.Generic.Logic;
-using System;
-using System.Drawing;
+﻿using System;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -14,7 +12,7 @@ namespace GetWebSitesToJPG
     public partial class _Default : Page
     {
         Uri uri = null;
-        string url = "";
+        //string url = "";
         bool iframeVisible = false;
 
         public bool IframeVisible
@@ -33,29 +31,6 @@ namespace GetWebSitesToJPG
         [WebMethod]
         public static string CropImage(float x, float y, float width, float height, string url, float containerWidth)// float scaleX, float scaleY, string filename)
         {
-            //Rectangle rect = new Rectangle
-            //{
-            //    Width = (int)width,
-            //    Height = (int)height
-            //};
-           // var page = new _Default();
-            /*var image = page.GetWebsiteImage(url, (int)containerWidth, (int)height, (int)y);
-            if (image.ImageLoaded)
-            {
-                var imgCropped = cropAtRect(image.Image, rect, x, y);
-
-                string path = page.Server.MapPath("Content/Images/Screenshots");
-                var filename = image.Filename;
-                string newFilename = filename + ".jpg";
-                path = path + "\\" + newFilename;
-
-                imgCropped.Save(pathuri
-
-                //bitmap.Dispose();
-            }
-            //var new =  Uri(url);
-            
-            */
             var imageId = Guid.NewGuid().ToString();
             imageId = Regex.Replace(imageId, "-", string.Empty, RegexOptions.IgnoreCase);
             var currentUrl = HttpContext.Current.Request.Url;
@@ -87,14 +62,11 @@ namespace GetWebSitesToJPG
         /// Generates Image from the specified Website
         /// </summary>
         protected void Preview_Gen_Click(object sender, EventArgs e)
-        {
-
-            url = txtUrl.Text;
+        { 
+            string url = txtUrl.Text;
             uri = new Uri(url);
             string domain = uri.Host;
             domain = Regex.Replace(domain, @"^(?:http(?:s)?://)?(?:www(?:[0-9]+)?\.)?", string.Empty, RegexOptions.IgnoreCase);
-
-            //GetWebsiteImageAsync();
 
             /**********************************
             * Method WebClient.DownloadString
@@ -159,30 +131,10 @@ namespace GetWebSitesToJPG
         }
 
         /// <summary>
-        /// Recreate a bitmap object from the image Website
+        /// Navigate and retrive Web Page
         /// </summary>
-        /// <returns>Image Website</returns>
-        [Obsolete]
-        public Bitmap CreateBitmap(string filename)
-        {
-            string serverPath = Server.MapPath("/Content/Images/Screenshots/");
-            serverPath = serverPath + filename;
-            Bitmap image = (Bitmap)Image.FromFile(serverPath, true);
-            return image;
-        }
-
-        /// <summary>
-        /// Crop Image
-        /// </summary>
-        /// <returns>Image Cropped</returns>
-        public static Bitmap cropAtRect(Bitmap b, Rectangle r, float x, float y)
-        {
-            Bitmap nb = new Bitmap(r.Width, r.Height);
-            Graphics g = Graphics.FromImage(nb);
-            g.DrawImage(b, -x, -y);
-            return nb;
-        }
-
+        /// <param name="url">Webpage URL</param>
+        /// <returns>HTML string page</returns>
         public string GetHTML(string url)
         {
             string webPage = String.Empty;
@@ -194,41 +146,6 @@ namespace GetWebSitesToJPG
             return webPage;
         }
 
-        private ImageReturned GetWebsiteImage(string url, int width, int height, int scrollY)
-        {
-            bool b = false;
-            var image = new ImageReturned();
-            uri = new Uri(url);
-            string domain = uri.Host;
-            domain = Regex.Replace(domain, @"^(?:http(?:s)?://)?(?:www(?:[0-9]+)?\.)?", string.Empty, RegexOptions.IgnoreCase);
-            
-            var filename = Guid.NewGuid().ToString();
-            filename = Regex.Replace(filename, "-", string.Empty, RegexOptions.IgnoreCase);
-            image.Filename = filename;
-            filename +=  "_raw.jpg"; ///domain + "_" + date
-            
-
-            Bitmap img = ImageUtil.GetWebSiteScreenCapture(url, width, height, scrollY);//, 1024, 768);
-            string path = Server.MapPath("Content/Images/Screenshots");
-            path = path + "\\" + filename;
-
-            try
-            {
-                img.Save(path);
-                b = true;
-            }
-            catch (Exception ex)
-            {
-                lblMsg.Text = "The image can not be loaded, please try again in a few moments.";
-                img.Dispose();
-            }
-
-            image.Image = (Bitmap)img.Clone();
-            image.ImageLoaded = b;
-            img.Dispose();
-
-            return image;
-        }
 
         /*private Uri CreateUri(string pUrl)
         {
@@ -248,52 +165,4 @@ namespace GetWebSitesToJPG
         }*/
         #endregion
     }
-
-    #region HelperClass
-    public class ImageReturned
-    {
-        bool imageLoaded;
-        Bitmap image;
-        string filename;
-
-        public bool ImageLoaded
-        {
-            get
-            {
-                return imageLoaded;
-            }
-
-            set
-            {
-                imageLoaded = value;
-            }
-        }
-
-        public Bitmap Image
-        {
-            get
-            {
-                return image;
-            }
-
-            set
-            {
-                image = value;
-            }
-        }
-
-        public string Filename
-        {
-            get
-            {
-                return filename;
-            }
-
-            set
-            {
-                filename = value;
-            }
-        }
-    }
-    #endregion
 }

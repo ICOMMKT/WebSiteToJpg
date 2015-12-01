@@ -28,10 +28,10 @@ namespace GetWebSitesToJPG
                 ImageCropData imgData = new ImageCropData();
                 using (ImageDBActions readImgFromDB = new ImageDBActions())
                 {
-                    imgData = readImgFromDB.GetImage(imageId.ToString());
+                    imgData = readImgFromDB.GetImageData(imageId.ToString());
                 }
-                string serverpath = RequestContext.HttpContext.Server.MapPath("Content/Images/Screenshots");
-                var image = ImageRenderMethods.GetWebsiteImage(imgData, serverpath);
+                //string serverpath = RequestContext.HttpContext.Server.MapPath("Content/Images/Screenshots");
+                var image = ImageRenderMethods.GetWebsiteImage(imgData);
                 ImageConverter converter = new ImageConverter();
                 byte[] buffer = (byte[])converter.ConvertTo(image, typeof(byte[]));
 
