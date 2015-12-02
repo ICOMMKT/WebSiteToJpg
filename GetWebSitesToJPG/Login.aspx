@@ -17,6 +17,7 @@
             </p>
          </asp:PlaceHolder>
          <asp:PlaceHolder runat="server" ID="LoginForm" Visible="false">
+             <asp:HyperLink runat="server" ID="RegisterHyperLink" ViewStateMode="Disabled">Register as a new user</asp:HyperLink>
             <div style="margin-bottom: 10px">
                <asp:Label runat="server" AssociatedControlID="UserName">User name</asp:Label>
                <div>
