@@ -13,15 +13,6 @@ namespace GetWebSitesToJPG {
     public partial class Login {
         
         /// <summary>
-        /// form1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-        
-        /// <summary>
         /// LoginStatus control.
         /// </summary>
         /// <remarks>
@@ -49,15 +40,6 @@ namespace GetWebSitesToJPG {
         protected global::System.Web.UI.WebControls.PlaceHolder LoginForm;
         
         /// <summary>
-        /// RegisterHyperLink control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink RegisterHyperLink;
-        
-        /// <summary>
         /// UserName control.
         /// </summary>
         /// <remarks>
@@ -83,5 +65,14 @@ namespace GetWebSitesToJPG {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder LogoutButton;
+        
+        /// <summary>
+        /// RegisterHyperLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink RegisterHyperLink;
     }
 }

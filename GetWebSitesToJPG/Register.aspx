@@ -1,13 +1,6 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Register.aspx.cs" Inherits="GetWebSitesToJPG.Register" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/Site.Master" CodeBehind="Register.aspx.cs" Inherits="GetWebSitesToJPG.Register" %>
 
-<!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title></title>
-</head>
-<body>
-    <form id="form1" runat="server">
+<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div>
     <h4 style="font-size: medium">Register a new user</h4>
         <hr />
@@ -38,6 +31,4 @@
             </div>
         </div>
     </div>
-    </form>
-</body>
-</html>
+</asp:Content>
