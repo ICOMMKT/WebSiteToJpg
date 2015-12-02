@@ -4,17 +4,23 @@ using Microsoft.Owin.Security;
 using System;
 using System.Linq;
 using System.Web;
+using Microsoft.AspNet.Identity.Owin;
+using GetWebSitesToJPG.Models;
 
 namespace GetWebSitesToJPG
 {
     public partial class Register : System.Web.UI.Page
     {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
         protected void CreateUser_Click(object sender, EventArgs e)
         {
             // Default UserStore constructor uses the default connection string named: DefaultConnection
-            var userStore = new UserStore<IdentityUser>();
-            var manager = new UserManager<IdentityUser>(userStore);
-            var user = new IdentityUser() { UserName = UserName.Text };
+            var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var signInManager = Context.GetOwinContext().Get<ApplicationSignInManager>();
+            var user = new ApplicationUser() { UserName = UserName.Text };
 
             IdentityResult result = manager.Create(user, Password.Text);
 
