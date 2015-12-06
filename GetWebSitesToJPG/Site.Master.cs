@@ -13,15 +13,7 @@ namespace GetWebSitesToJPG
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            bool val = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
-            if (val)
-            {
-                btnSign.Text = "Sign Out";
-            }
-            else
-            {
-                btnSign.Text = "Sign in";
-            }
+          
         }
 
         protected void SignOut_or_SignIn(object sender, EventArgs e)

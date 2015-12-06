@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
 using System.Web;
+using System.Web.Security;
 using System.Web.UI.WebControls;
 
 namespace GetWebSitesToJPG
@@ -35,16 +36,21 @@ namespace GetWebSitesToJPG
             switch (result)
             {
                 case SignInStatus.Success:
+                    FormsAuthentication.RedirectFromLoginPage(UserName.Text, true);
                     IdentityHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
                     break;
                 case SignInStatus.LockedOut:
-                    Response.Redirect("/Account/Lockout");
+                    //Response.Redirect("/Account/Lockout");
+                    StatusText.Text = "your account has been locked";
+                    LoginStatus.Visible = true;
                     break;
                 case SignInStatus.RequiresVerification:
-                    Response.Redirect(String.Format("/Account/TwoFactorAuthenticationSignIn?ReturnUrl={0}&RememberMe={1}",
-                                                    Request.QueryString["ReturnUrl"],
-                                                    false),
-                                      true);
+                    //Response.Redirect(String.Format("/Account/TwoFactorAuthenticationSignIn?ReturnUrl={0}&RememberMe={1}",
+                    //                                Request.QueryString["ReturnUrl"],
+                    //                                false),
+                    //                  true);
+                    StatusText.Text = "your account is enabled to use two factor authentication";
+                    LoginStatus.Visible = true;
                     break;
                 case SignInStatus.Failure:
                 default:
