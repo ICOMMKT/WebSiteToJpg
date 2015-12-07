@@ -30,8 +30,8 @@ namespace GetWebSitesToJPG
                 {
                     imgData = readImgFromDB.GetImageData(imageId.ToString());
                 }
-                //string serverpath = RequestContext.HttpContext.Server.MapPath("Content/Images/Screenshots");
-                var image = ImageRenderMethods.GetWebsiteImage(imgData);
+                string serverpath = RequestContext.HttpContext.Server.MapPath("Content/Images/Screenshots");
+                var image = ImageRenderMethods.GetWebsiteImage(imgData, serverpath);
                 ImageConverter converter = new ImageConverter();
                 byte[] buffer = (byte[])converter.ConvertTo(image, typeof(byte[]));
 

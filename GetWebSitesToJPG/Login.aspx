@@ -6,6 +6,7 @@
                <asp:Literal runat="server" ID="StatusText" />
             </p>
          </asp:PlaceHolder>
+    <asp:PlaceHolder runat="server" ID="logForm">
         <div style="margin-bottom: 10px">
             <asp:Label runat="server" AssociatedControlID="UserName">User name</asp:Label>
             <div>
@@ -23,5 +24,6 @@
                 <asp:Button runat="server" OnClick="SignIn" Text="Log in" />
             </div>
         </div>
+    </asp:PlaceHolder>
     <asp:HyperLink runat="server" ID="RegisterHyperLink" ViewStateMode="Disabled">Register as a new user</asp:HyperLink>
 </asp:Content>

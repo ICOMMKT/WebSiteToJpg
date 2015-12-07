@@ -13,7 +13,7 @@ namespace GetWebSitesToJPG
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            RegisterHyperLink.NavigateUrl = "Register";
+            RegisterHyperLink.NavigateUrl = "/Register.aspx";
             // Enable this once you have account confirmation enabled for password reset functionality
             //ForgotPasswordHyperLink.NavigateUrl = "Forgot";
             //OpenAuthLogin.ReturnUrl = Request.QueryString["ReturnUrl"];
@@ -21,6 +21,13 @@ namespace GetWebSitesToJPG
             if (!String.IsNullOrEmpty(returnUrl))
             {
                 RegisterHyperLink.NavigateUrl += "?ReturnUrl=" + returnUrl;
+            }
+            bool val = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
+            if(val)
+            {
+                logForm.Visible = false;
+                RegisterHyperLink.NavigateUrl = "/Default.aspx";
+                RegisterHyperLink.Text = "Return to main page";
             }
         }
 

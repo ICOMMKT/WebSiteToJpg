@@ -1,5 +1,6 @@
 ﻿using GetWebSitesToJPG.Models;
 using iComMkt.Generic.Logic;
+using System;
 using System.Drawing;
 
 namespace GetWebSitesToJPG.Logic
@@ -14,14 +15,27 @@ namespace GetWebSitesToJPG.Logic
         /// </summary>
         /// <param name="imgData">image object data</param>
         /// <returns>Web page image cropped.</returns>
-        public static Bitmap GetWebsiteImage(ImageCropData imgData)
+        public static Bitmap GetWebsiteImage(ImageCropData imgData, string serverpath)
         {
             var width = imgData.Width;
             var height = imgData.Height;
             var y = imgData.Y;
             var x = imgData.X;
 
-            Bitmap img = ImageUtil.GetWebSiteScreenCapture(imgData.Url, width, height, (int)y);//, 1024, 768);
+            Bitmap img = ImageUtil.GetWebSiteScreenCapture(imgData.Url, imgData.ContainerWidth, height, (int)y);//, 1024, 768);
+            string imgPath = serverpath + "\\img_raw.jpg";
+
+            try
+            {
+                img.Save(imgPath);
+                //b = true;
+            }
+            catch (Exception ex)
+            {
+                //lblMsg.Text = "The image can not be loaded, please try again in a few moments.";
+                img.Dispose();
+            }
+
 
             Rectangle rect = new Rectangle
             {
@@ -30,6 +44,7 @@ namespace GetWebSitesToJPG.Logic
             };
 
             img = cropAtRect(img, rect, x, y);
+
 
             return img;
         }
