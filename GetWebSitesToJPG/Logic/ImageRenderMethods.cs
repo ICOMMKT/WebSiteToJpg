@@ -23,7 +23,7 @@ namespace GetWebSitesToJPG.Logic
             var x = imgData.X;
 
             Bitmap img = ImageUtil.GetWebSiteScreenCapture(imgData.Url, imgData.ContainerWidth, height, (int)y);//, 1024, 768);
-            string imgPath = serverpath + "\\img_raw.jpg";
+            /*string imgPath = serverpath + "\\img_raw.jpg";
 
             try
             {
@@ -35,7 +35,7 @@ namespace GetWebSitesToJPG.Logic
                 //lblMsg.Text = "The image can not be loaded, please try again in a few moments.";
                 img.Dispose();
             }
-
+            */
 
             Rectangle rect = new Rectangle
             {

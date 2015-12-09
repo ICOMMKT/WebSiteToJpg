@@ -12,7 +12,7 @@ namespace GetWebSitesToJPG
     public partial class _Default : Page
     {
         Uri uri = null;
-        //string url = "";
+        
         bool iframeVisible = false;
 
         public bool IframeVisible
@@ -64,7 +64,7 @@ namespace GetWebSitesToJPG
         protected void Preview_Gen_Click(object sender, EventArgs e)
         { 
             string url = txtUrl.Text;
-            uri = new Uri(url);
+            uri = CreateUri(url);
             string domain = uri.Host;
             domain = Regex.Replace(domain, @"^(?:http(?:s)?://)?(?:www(?:[0-9]+)?\.)?", string.Empty, RegexOptions.IgnoreCase);
 
@@ -153,7 +153,7 @@ namespace GetWebSitesToJPG
         }
 
 
-        /*private Uri CreateUri(string pUrl)
+        private Uri CreateUri(string pUrl)
         {
             string url = null;
             if (pUrl != null)
@@ -167,8 +167,8 @@ namespace GetWebSitesToJPG
                     url = "http://" + pUrl.ToString();
                 }
             }
-
-        }*/
+            return new Uri(url);
+        }
         #endregion
     }
 }

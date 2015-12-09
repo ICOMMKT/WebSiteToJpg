@@ -37,8 +37,25 @@ textarea {
   max-width: 100%;
 }
 /*#Custom CSS#*/
+#mainContent {
+    margin-top: 5px;
+}
+#MainContent_txtUrl {
+    border-radius: 3px;
+    border: solid 1px black;
+    height: 27px;
+}
+.control-panel {
+    position: fixed;
+    width: 17%;
+    border-right: 1px solid #eeeeee;
+}
+.genPrev {
+    margin: 8px 0;
+}
 .HiddenButtons {
     display: none;
+    margin: 8px 0;
 }
 .iframe-holder {
   background: url(Images/loading.gif) center center no-repeat;
@@ -49,4 +66,11 @@ textarea {
     height: 100%;
     position: absolute;
     z-index: 999;
+}
+.watermark-out {
+    text-align: center;
+}
+.watermark-in {
+    text-align: left;
+    padding-left: 3px;
 }
