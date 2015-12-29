@@ -211,3 +211,7 @@ GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
 /GetWebSitesWithLogon/GetWebSitesWithLogon.csproj
+
+/GetWebSitesToJPG/Content/Images/Screenshots
+
+
