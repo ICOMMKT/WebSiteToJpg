@@ -6,6 +6,7 @@ using System.Web.Services;
 using System.Web.UI;
 using GetWebSitesToJPG.Logic;
 using GetWebSitesToJPG.Models;
+using System.Text;
 
 namespace GetWebSitesToJPG
 {
@@ -147,6 +148,8 @@ namespace GetWebSitesToJPG
                 var encoding = client.Encoding;
                 //client.Encoding = System.Text.Encoding.UTF8;
                 webPage = client.DownloadString(url);
+                byte[] bytes = Encoding.Default.GetBytes(webPage);
+                webPage = encoding.GetString(bytes);          
                 //webPage = client.DownloadString(url);
             }
             return webPage;
