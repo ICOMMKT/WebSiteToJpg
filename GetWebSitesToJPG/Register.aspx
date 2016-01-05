@@ -27,8 +27,30 @@
         </div>
         <div>
             <div>
-                <asp:Button runat="server" OnClick="CreateUser_Click" Text="Register" />
+                <asp:Button runat="server" OnClick="CreateUser_Click" Text="Register" CausesValidation="true" OnClientClick="return validate()" />
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function () {
+            $('#MainContent_UserName').focus();
+        });
+        function validate() {
+            if ($('#MainContent_UserName').val() == "") {
+                alert('You must enter a Username');
+                return false;
+            }
+            if ($('#MainContent_Password').val() == "") {
+                alert('You must enter a password');
+                return false;
+            }
+            else {
+                if ($('#MainContent_ConfirmPassword').val() == "") {
+                    alert('You must confirm your password');
+                    return false;
+                }
+            }
+
+        }
+    </script>
 </asp:Content>

@@ -17,23 +17,48 @@ namespace GetWebSitesToJPG
         }
         protected void CreateUser_Click(object sender, EventArgs e)
         {
-            // Default UserStore constructor uses the default connection string named: DefaultConnection
-            var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            var signInManager = Context.GetOwinContext().Get<ApplicationSignInManager>();
-            var user = new ApplicationUser() { UserName = UserName.Text };
+            string pass = Password.Text;
+            string confPass = ConfirmPassword.Text;
 
-            IdentityResult result = manager.Create(user, Password.Text);
-
-            if (result.Succeeded)
+            if (String.IsNullOrEmpty(pass))
             {
-                var authenticationManager = HttpContext.Current.GetOwinContext().Authentication;
-                var userIdentity = manager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
-                authenticationManager.SignIn(new AuthenticationProperties() { }, userIdentity);
-                Response.Redirect("~/Default.aspx");
+                StatusMessage.Text = "The Password field can not be empty";
             }
             else
             {
-                StatusMessage.Text = result.Errors.FirstOrDefault();
+                if (String.IsNullOrEmpty(confPass))
+                {
+                    StatusMessage.Text = "The Confirm Password field can not be empty";
+                }
+                else
+                {
+                    if (!(pass == confPass))
+                    {
+                        StatusMessage.Text = "The passwords don't match, please try again";
+                    }
+                    else
+                    {
+                        // Default UserStore constructor uses the default connection string named: DefaultConnection
+                        var manager = Context.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                        var signInManager = Context.GetOwinContext().Get<ApplicationSignInManager>();
+                        var user = new ApplicationUser() { UserName = UserName.Text };
+
+                        IdentityResult result = manager.Create(user, Password.Text);
+
+                        if (result.Succeeded)
+                        {
+                            var authenticationManager = HttpContext.Current.GetOwinContext().Authentication;
+                            var userIdentity = manager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
+                            authenticationManager.SignIn(new AuthenticationProperties() { }, userIdentity);
+                            Response.Redirect("~/Default.aspx");
+                        }
+                        else
+                        {
+                            StatusMessage.Text = result.Errors.FirstOrDefault();
+                        }
+                    }
+                    
+                }
             }
         }
     }

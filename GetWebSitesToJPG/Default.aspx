@@ -71,7 +71,10 @@
         });
 
         $('.iframe-holder iframe').load(function () {
-            this.style.height = $(this.contentWindow.document).height() + 'px';
+            $('.iframe-holder').height($(this.contentWindow.document).height());
+            $('.iframe-holder').width($(this.contentWindow.document).width());
+            //this.style.height = $(this.contentWindow.document).height() + 'px';
+            //this.style.width = $(this.contentWindow.document).width() + 'px';
             isFullLoaded = true;
         });
 
