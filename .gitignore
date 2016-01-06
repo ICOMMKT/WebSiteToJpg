@@ -210,8 +210,8 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
-/GetWebSitesWithLogon/GetWebSitesWithLogon.csproj
 
-/GetWebSitesToJPG/Content/Images/Screenshots/*
-*.config
+GetWebSitesWithLogon/GetWebSitesWithLogon.csproj
+GetWebSitesToJPG/Content/Images/Screenshots/*
+GetWebSitesToJPG/*.config
 
