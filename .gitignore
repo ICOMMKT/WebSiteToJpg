@@ -213,5 +213,5 @@ ModelManifest.xml
 /GetWebSitesWithLogon/GetWebSitesWithLogon.csproj
 
 /GetWebSitesToJPG/Content/Images/Screenshots/*
-
+*.config
 
