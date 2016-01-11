@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace iComMkt.Generic.Logic
+namespace ImageService.Logic
 {
     /// <summary>
     /// Summary description for $codebehindclassname$

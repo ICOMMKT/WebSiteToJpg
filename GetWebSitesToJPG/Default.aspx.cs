@@ -1,12 +1,12 @@
-﻿using System;
+﻿using GetWebSitesToJPG.Logic;
+using ImageService.Models;
+using System;
 using System.Net;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Services;
 using System.Web.UI;
-using GetWebSitesToJPG.Logic;
-using GetWebSitesToJPG.Models;
-using System.Text;
 
 namespace GetWebSitesToJPG
 {
@@ -35,8 +35,8 @@ namespace GetWebSitesToJPG
             var imageId = Guid.NewGuid().ToString();
             imageId = Regex.Replace(imageId, "-", string.Empty, RegexOptions.IgnoreCase);
             var currentUrl = HttpContext.Current.Request.Url;
-            string urlGenerated = currentUrl.Scheme + "://"+ currentUrl.Authority + "/" + imageId;
-
+            //string urlGenerated = currentUrl.Scheme + "://"+ currentUrl.Authority + "/" + imageId;
+            string urlGenerated = "http://localhost:1979/" + imageId;
             using (ImageDBActions newImgToDB = new ImageDBActions())
             {
                 var imgData = new ImageCropData {
@@ -54,11 +54,6 @@ namespace GetWebSitesToJPG
             return urlGenerated;
         }
 
-        protected void Page_Load(object sender, EventArgs e)
-        {
-
-        }
-
         /// <summary>
         /// Generates Image from the specified Website
         /// </summary>
@@ -68,6 +63,9 @@ namespace GetWebSitesToJPG
             uri = CreateUri(url);
             string domain = uri.Host;
             domain = Regex.Replace(domain, @"^(?:http(?:s)?://)?(?:www(?:[0-9]+)?\.)?", string.Empty, RegexOptions.IgnoreCase);
+
+            var date = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + "_" + DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
+            var filename = domain + "_" + date + ".html";
 
             /**********************************
             * Method WebClient.DownloadString
@@ -88,8 +86,10 @@ namespace GetWebSitesToJPG
             doc = AssignAsbsoluteUri(doc, "//link", "href");
 
             string path = Server.MapPath("Content/Images/Screenshots");
-            var filepath = path + "\\result.html";
+            var filepath = path + "\\" + filename;
             doc.Save(filepath);//webpageurlNext
+
+            iframeLoader.Src = "Content/Images/Screenshots/" + filename;
 
             iframeLoader.Visible = true;
 
@@ -100,6 +100,7 @@ namespace GetWebSitesToJPG
         }
 
         #endregion
+
         #region Methods
 
         /// <summary>

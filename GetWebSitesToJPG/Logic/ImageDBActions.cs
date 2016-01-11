@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using GetWebSitesToJPG.Models;
+using ImageService.Models;
 
 namespace GetWebSitesToJPG.Logic
 {
@@ -25,18 +26,6 @@ namespace GetWebSitesToJPG.Logic
                 _db.ImageCropData.Add(imgItem);
             }
             _db.SaveChanges();
-        }
-        /// <summary>
-        /// Get image data
-        /// </summary>
-        /// <param name="imageId">image Id</param>
-        /// <returns>Image data for crop</returns>
-        public ImageCropData GetImageData(string imageId)
-        {
-            IQueryable<ImageCropData> query = _db.ImageCropData;
-            query = query.Where(p => p.ImageID == imageId);
-
-            return query.SingleOrDefault();
         }
 
         public void Dispose()

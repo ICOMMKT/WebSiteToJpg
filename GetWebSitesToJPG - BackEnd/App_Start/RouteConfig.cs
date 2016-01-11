@@ -4,7 +4,7 @@ using System.Web;
 using System.Web.Routing;
 using Microsoft.AspNet.FriendlyUrls;
 
-namespace GetWebSitesToJPG
+namespace GetWebSitesToJPG___BackEnd
 {
     public static class RouteConfig
     {
@@ -14,7 +14,7 @@ namespace GetWebSitesToJPG
             settings.AutoRedirectMode = RedirectMode.Off;
             routes.EnableFriendlyUrls(settings);
 
-            //routes.Add(new Route("{imageID}", new RouteHandler()));
+            routes.Add(new Route("{imageID}", new RouteHandler()));
         }
     }
 }

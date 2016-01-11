@@ -1,7 +1,7 @@
 ﻿using System.Data.Entity;
 using ImageService.Models;
 
-namespace GetWebSitesToJPG.Models
+namespace GetWebSitesToJPG___BackEnd.Models
 {
     public class ContextDB : DbContext
     {
