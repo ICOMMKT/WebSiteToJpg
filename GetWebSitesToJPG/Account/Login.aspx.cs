@@ -28,6 +28,8 @@ namespace GetWebSitesToJPG.Account
                 logForm.Visible = false;
                 RegisterHyperLink.NavigateUrl = "/Default.aspx";
                 RegisterHyperLink.Text = "Return to main page";
+                StatusText.Text = "Welcome " + User.Identity.GetUserName();
+                LoginStatus.Visible = true;
             }
         }
 

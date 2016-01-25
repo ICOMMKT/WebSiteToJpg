@@ -14,9 +14,10 @@
         </div>
     </div>
     <div id="mainContent" class="row">
-        <div class="col-sm-3">
+        <h1>Get JPG from WebPage</h1>
+        <div class="col-sm-12" style="margin-bottom: 125px;">
             <div class="control-panel">
-                <h1>Get JPG from WebPage</h1>
+                <h3>Tools</h3>
                 <div>
                     <asp:TextBox ID="txtUrl" runat="server" placeholder="URL" CssClass="watermark-out"></asp:TextBox>
                     <asp:Button Text="Generate Preview" runat="server" class="btn btn-primary genPrev" OnClick="Preview_Gen_Click" CausesValidation="true" OnClientClick="return ShowGif()" />
@@ -29,7 +30,9 @@
                 <div class="img-preview preview-lg"></div>
             </div>
         </div>
-        <div class="col-sm-9">
+        <hr />
+        <div class="col-sm-12">
+            <h3>Preview Web Page</h3>
             <asp:Label ID="lblMsg" Text="" runat="server" />
             <div class="cont">
                 <img src="" id="imgPreview" runat="server" alt="" />
@@ -87,11 +90,14 @@
                     $cropperEl = $('.iframe-holder > iframe').cropper({
                         movable: false,
                         zoomable: false,
-                        rotatable: false,
+                        rotatable: false,   
                         scalable: false
                     });
 
                     var canvasData = $cropperEl.cropper('getCropBoxData');
+                    canvasData.width = 640;
+                    canvasData.height = 480;
+                    $cropperEl.cropper('setCropBoxData', canvasData);
                 } else {
                     alert('Wait until the page is full loaded.');
                 }

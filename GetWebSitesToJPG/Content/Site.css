@@ -44,11 +44,15 @@ textarea {
     border-radius: 3px;
     border: solid 1px black;
     height: 27px;
+    width: 245px;
 }
 .control-panel {
     position: fixed;
-    width: 17%;
+    /*width: 17%;*/
+    width: 100%;
     border-right: 1px solid #eeeeee;
+    z-index: 20000;
+    background: rgba(255,255,255,0.8);
 }
 .genPrev {
     margin: 8px 0;
