@@ -7,22 +7,22 @@ using System.Web;
 using System.Web.Security;
 using System.Web.UI.WebControls;
 
-namespace GetWebSitesToJPG
+namespace GetWebSitesToJPG.Account
 {
     public partial class Login : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            RegisterHyperLink.NavigateUrl = "/Register.aspx";
+            RegisterHyperLink.NavigateUrl = "/Account/Register.aspx";
             // Enable this once you have account confirmation enabled for password reset functionality
             //ForgotPasswordHyperLink.NavigateUrl = "Forgot";
-            //OpenAuthLogin.ReturnUrl = Request.QueryString["ReturnUrl"];
+            OpenAuthLogin.ReturnUrl = Request.QueryString["ReturnUrl"];
             var returnUrl = HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
             if (!String.IsNullOrEmpty(returnUrl))
             {
                 RegisterHyperLink.NavigateUrl += "?ReturnUrl=" + returnUrl;
             }
-            bool val = (System.Web.HttpContext.Current.User != null) && System.Web.HttpContext.Current.User.Identity.IsAuthenticated;
+            bool val = (HttpContext.Current.User != null) && HttpContext.Current.User.Identity.IsAuthenticated;
             if(val)
             {
                 logForm.Visible = false;
@@ -71,7 +71,8 @@ namespace GetWebSitesToJPG
         {
             var authenticationManager = HttpContext.Current.GetOwinContext().Authentication;
             authenticationManager.SignOut();
-            Response.Redirect("~/Login.aspx");
+            Response.Redirect("~/Account/Login.aspx");
         }
+
     }
 }

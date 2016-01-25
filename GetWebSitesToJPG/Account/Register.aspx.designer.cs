@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GetWebSitesToJPG {
+namespace GetWebSitesToJPG.Account {
     
     
     public partial class Register {

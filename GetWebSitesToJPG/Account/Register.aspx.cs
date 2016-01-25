@@ -7,7 +7,7 @@ using System.Web;
 using Microsoft.AspNet.Identity.Owin;
 using GetWebSitesToJPG.Models;
 
-namespace GetWebSitesToJPG
+namespace GetWebSitesToJPG.Account
 {
     public partial class Register : System.Web.UI.Page
     {
