@@ -72,7 +72,7 @@ namespace GetWebSitesToJPG
           
         }
 
-        protected void SignOut_or_SignIn(object sender, EventArgs e)
+        protected void SignOut(object sender, EventArgs e)
         {
             Context.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
         }

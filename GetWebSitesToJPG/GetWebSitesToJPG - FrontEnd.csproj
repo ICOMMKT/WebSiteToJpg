@@ -332,6 +332,10 @@
       <Project>{874b8f7e-5f40-4d9c-a1e6-8c08c6249fda}</Project>
       <Name>ImageService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OtherIcommktOwinAuth\OtherIcommktOwinAuth.csproj">
+      <Project>{4532b2fe-2ba1-4fd0-ac42-ef6d04ee76a8}</Project>
+      <Name>OtherIcommktOwinAuth</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201511301913230_InitialCreate.resx">

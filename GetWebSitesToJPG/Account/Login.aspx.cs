@@ -13,15 +13,19 @@ namespace GetWebSitesToJPG.Account
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            RegisterHyperLink.NavigateUrl = "/Account/Register.aspx";
+             RegisterHyperLink.NavigateUrl = "/Account/Register.aspx";
             // Enable this once you have account confirmation enabled for password reset functionality
             //ForgotPasswordHyperLink.NavigateUrl = "Forgot";
-            OpenAuthLogin.ReturnUrl = Request.QueryString["ReturnUrl"];
-            var returnUrl = HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
-            if (!String.IsNullOrEmpty(returnUrl))
+            var returnUrl = Request.QueryString["ReturnUrl"];
+            //OpenAuthLogin.ReturnUrl = returnUrl;
+
+            var errorExternalAuth = Request.QueryString["error"];
+            if (!string.IsNullOrEmpty(errorExternalAuth))
             {
-                RegisterHyperLink.NavigateUrl += "?ReturnUrl=" + returnUrl;
+                StatusText.Text = "External authentication failed, try again or use another authentication method.";
+                LoginStatus.Visible = true;
             }
+              
             bool val = (HttpContext.Current.User != null) && HttpContext.Current.User.Identity.IsAuthenticated;
             if(val)
             {

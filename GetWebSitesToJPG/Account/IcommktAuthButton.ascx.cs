@@ -21,8 +21,8 @@ namespace GetWebSitesToJPG.Account
                 }
                 //Response.Redirect("SignInExternal");
                 // Request a redirect to the external login provider
-                ReturnUrl = "~/Account/RegisterExternalLogin";
-                string redirectUrl = ResolveUrl(String.Format(CultureInfo.InvariantCulture, "~/Account/RegisterExternalLogin?{0}={1}&returnUrl={2}", IdentityHelper.ProviderNameKey, provider, ReturnUrl));
+                ReturnUrl = Request.QueryString["ReturnUrl"];
+                string redirectUrl = ResolveUrl(String.Format(CultureInfo.InvariantCulture, "~/Account/RegisterExternalLogin.aspx?{0}={1}&returnUrl={2}", IdentityHelper.ProviderNameKey, provider, ReturnUrl));
                 var properties = new AuthenticationProperties() { RedirectUri = redirectUrl };
                 // Add xsrf verification when linking accounts
                 if (Context.User.Identity.IsAuthenticated)

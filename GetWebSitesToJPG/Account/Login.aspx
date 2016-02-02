@@ -10,7 +10,7 @@
     <asp:PlaceHolder runat="server" ID="logForm">
         <h1>Log in</h1>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-sm-6">
                 <div style="margin-bottom: 10px">
                     <asp:Label runat="server" AssociatedControlID="UserName">User name</asp:Label>
                     <div>
@@ -29,7 +29,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-sm-6">
                 <uc:OpenAuthProviders runat="server" ID="OpenAuthLogin" />
             </div>
         </div>

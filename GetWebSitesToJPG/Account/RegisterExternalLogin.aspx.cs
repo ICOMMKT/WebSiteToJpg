@@ -48,7 +48,7 @@ namespace GetWebSitesToJPG.Account
             ProviderName = IdentityHelper.GetProviderNameFromRequest(Request);
             if (String.IsNullOrEmpty(ProviderName))
             {
-                Response.Redirect("~/Account/Login");
+                Response.Redirect("~/Account/Login.aspx");
             }
             if (!IsPostBack)
             {
@@ -56,7 +56,13 @@ namespace GetWebSitesToJPG.Account
                 var loginInfo = Context.GetOwinContext().Authentication.GetExternalLoginInfo();
                 if (loginInfo == null)
                 {
-                    Response.Redirect("~/Account/Login");
+                    var error = Request.QueryString["error"];
+                    var redirectUri = "~/Account/Login.aspx";
+                    if (!string.IsNullOrEmpty(error))
+                    {
+                        redirectUri += "?error=" + error;
+                    }
+                    Response.Redirect(redirectUri);
                 }
                 var user = manager.Find(loginInfo.Login);
                 if (user != null)
@@ -91,7 +97,7 @@ namespace GetWebSitesToJPG.Account
                     var verifiedloginInfo = Context.GetOwinContext().Authentication.GetExternalLoginInfo(IdentityHelper.XsrfKey, User.Identity.GetUserId());
                     if (verifiedloginInfo == null)
                     {
-                        Response.Redirect("~/Account/Login");
+                        Response.Redirect("~/Account/Login.aspx");
                     }
 
                     var result = manager.AddLogin(User.Identity.GetUserId(), verifiedloginInfo.Login);
@@ -145,7 +151,7 @@ namespace GetWebSitesToJPG.Account
                     loginInfo = (ExternalLoginInfo)Application["loginInfo"];
                     if(loginInfo == null)
                     {
-                        Response.Redirect("~/Account/Login");
+                        Response.Redirect("~/Account/Login.aspx");
                         return;
                     }
                 }

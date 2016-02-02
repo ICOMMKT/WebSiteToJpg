@@ -13,6 +13,9 @@ namespace DummyOwinAuth
     // Created by the factory in the DummyAuthenticationMiddleware class.
     class DummyAuthenticationHandler : AuthenticationHandler<DummyAuthenticationOptions>
     {
+        private const string TokenEndpoint = "http://localhost:18989/oauth2/access_token";
+        private const string GraphApiEndpoint = "https://localhost:18989/users";
+
         protected override Task<AuthenticationTicket> AuthenticateCoreAsync()
         {
             // ASP.Net Identity requires the NameIdentitifer field to be set or it won't  
