@@ -17,8 +17,6 @@ namespace IcommktOwinAuth
             Description.Caption = Constants.DefaultAuthenticationType;
             CallbackPath = new PathString("/signin-icommkt");
             AuthenticationMode = AuthenticationMode.Passive;
-            //UserName = userName;
-            //UserId = userId;
             ClientId = clientId;
             BackchannelTimeout = TimeSpan.FromSeconds(60);
         }
@@ -29,9 +27,9 @@ namespace IcommktOwinAuth
 
         public string Error { get; set; }
 
-        public string UserName { get; set; }
+        //public string UserName { get; set; }
 
-        public string UserId { get; set; }
+       // public string UserId { get; set; }
 
         
 

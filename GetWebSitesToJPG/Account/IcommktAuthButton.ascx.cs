@@ -19,7 +19,6 @@ namespace GetWebSitesToJPG.Account
                 {
                     return;
                 }
-                //Response.Redirect("SignInExternal");
                 // Request a redirect to the external login provider
                 ReturnUrl = Request.QueryString["ReturnUrl"];
                 string redirectUrl = ResolveUrl(String.Format(CultureInfo.InvariantCulture, "~/Account/RegisterExternalLogin.aspx?{0}={1}&returnUrl={2}", IdentityHelper.ProviderNameKey, provider, ReturnUrl));

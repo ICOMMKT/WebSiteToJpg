@@ -85,8 +85,6 @@ namespace PruebaOwinIconmkt.oauth
                 switch (result)
                 {
                     case SignInStatus.Success:
-                        //IdentityHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
-                        //AuthPrompt.Visible = true;
                         Response.Redirect(Request.RawUrl);
                         break;
                     case SignInStatus.LockedOut:
@@ -110,8 +108,7 @@ namespace PruebaOwinIconmkt.oauth
         protected void DenyAccess(object sender, EventArgs e)
         {
             string redirectUri = hdn_redUri.Value;
-            //redirectUri = Uri.UnescapeDataString(redirectUri).Trim();
-            var state = hdn_state.Value;//Request.QueryString["state"];
+            var state = hdn_state.Value;
 
             if (!string.IsNullOrEmpty((redirectUri)))
             {
@@ -162,6 +159,5 @@ namespace PruebaOwinIconmkt.oauth
             }
             return json;
         }
-        
     }
 }

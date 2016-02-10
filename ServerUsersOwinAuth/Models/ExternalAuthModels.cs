@@ -49,8 +49,6 @@ namespace ServerUsersOwinAuth.Models
        // }
         public DbSet<ExternalAuthClients> ExternalAuthClients { get; set; }
 
-        //public DbSet<AuthTokens> AuthTokens { get; set; }
-
         public DbSet<UsersAppsAccessGranted> UsersAppsAccessGranted { get; set; }
     }
 

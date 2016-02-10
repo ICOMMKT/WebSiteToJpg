@@ -34,12 +34,10 @@ namespace GetWebSitesToJPG___BackEnd
                 ImageConverter converter = new ImageConverter();
                 byte[] buffer = (byte[])converter.ConvertTo(image, typeof(byte[]));
 
-                //string imagePath = "~/Content/Images/Screenshots/" + imageId + ".jpg";
                 context.Response.ContentType = "image/jpg";
                 context.Response.BinaryWrite(buffer);
                 context.Response.Flush();
                 image.Dispose();
-                //context.Response.WriteFile(imagePath);
             }
         }
 

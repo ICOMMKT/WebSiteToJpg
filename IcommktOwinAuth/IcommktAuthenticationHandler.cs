@@ -36,7 +36,6 @@ namespace IcommktOwinAuth
             try
             {
                 _logger.WriteVerbose("AuthenticateCoreAsync");
-                //AuthenticationTicket authTicket = null;
                 string error = null, token = null, state = null;
 
                 IReadableStringCollection query = Request.Query;
@@ -121,15 +120,12 @@ namespace IcommktOwinAuth
 
                     if (string.IsNullOrEmpty(state.RedirectUri))
                     {
-                        //state.RedirectUri = Request.Uri.ToString();
                         state.RedirectUri = currentUri;
                     }
 
                     var stateString = Options.StateDataFormat.Protect(state);
 
-                    //var  callBackPath = WebUtilities.AddQueryString(Options.CallbackPath.Value, "state", stateString);
-                    //Response.Redirect(callBackPath);
-                    string authorizationEndpoint = "http://jrbsag-thinkpc/acme/Account/authenticate" +
+                    string authorizationEndpoint = "http://jrbsag-thinkpc/ServerUsersOwinAuth/Account/authenticate" +
                          "?client_id=" + Uri.EscapeDataString(Options.ClientId) +
                          "&redirect_uri=" + Uri.EscapeDataString(redirectUri) +
                         " &state=" + Uri.EscapeDataString(stateString);

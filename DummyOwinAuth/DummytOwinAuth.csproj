@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4532B2FE-2BA1-4FD0-AC42-EF6D04EE76A8}</ProjectGuid>
+    <ProjectGuid>{C0017F29-A6C9-494A-809C-A4899055476E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OtherIcommktOwinAuth</RootNamespace>
-    <AssemblyName>OtherIcommktOwinAuth</AssemblyName>
+    <RootNamespace>DummyOwinAuth</RootNamespace>
+    <AssemblyName>DummyOwinAuth</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -38,17 +38,12 @@
       <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,12 +53,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
-    <Compile Include="IcommktAuthenticationExtensions.cs" />
-    <Compile Include="IcommktAuthenticationHandler.cs" />
-    <Compile Include="IcommktAuthenticationMiddleware.cs" />
-    <Compile Include="IcommktAuthenticationOptions.cs" />
+    <Compile Include="DummyAuthenticationExtensions.cs" />
+    <Compile Include="DummyAuthenticationHandler.cs" />
+    <Compile Include="DummyAuthenticationMiddleware.cs" />
+    <Compile Include="DummyAuthenticationOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Provider\IcommktAuthenticatedContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

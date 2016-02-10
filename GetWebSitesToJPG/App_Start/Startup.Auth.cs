@@ -7,7 +7,6 @@ using System;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security.DataProtection;
-using DummyOwinAuth;
 using IcommktOwinAuth;
 
 [assembly: OwinStartup(typeof(GetWebSitesToJPG.Startup))]
@@ -39,8 +38,7 @@ namespace GetWebSitesToJPG
             });
             // Use a cookie to temporarily store information about a user logging in with a third party login provider
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
-
-            app.UseDummyAuthentication(new DummyAuthenticationOptions("John Doe", "42"));
+            // Use for Icommkt auth
             app.UseIcommkAuthentication(new IcommktAuthenticationOptions("d6789dc3b9994146866b7c574390beae"));
         }
     }

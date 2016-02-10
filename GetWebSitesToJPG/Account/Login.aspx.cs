@@ -17,7 +17,6 @@ namespace GetWebSitesToJPG.Account
             // Enable this once you have account confirmation enabled for password reset functionality
             //ForgotPasswordHyperLink.NavigateUrl = "Forgot";
             var returnUrl = Request.QueryString["ReturnUrl"];
-            //OpenAuthLogin.ReturnUrl = returnUrl;
 
             var errorExternalAuth = Request.QueryString["error"];
             if (!string.IsNullOrEmpty(errorExternalAuth))

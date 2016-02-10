@@ -325,16 +325,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IcommktOwinAuth\IcommktOwinAuth.csproj">
-      <Project>{c0017f29-a6c9-494a-809c-a4899055476e}</Project>
+      <Project>{4532b2fe-2ba1-4fd0-ac42-ef6d04ee76a8}</Project>
       <Name>IcommktOwinAuth</Name>
     </ProjectReference>
     <ProjectReference Include="..\ImageUtil\ImageService.csproj">
       <Project>{874b8f7e-5f40-4d9c-a1e6-8c08c6249fda}</Project>
       <Name>ImageService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\OtherIcommktOwinAuth\OtherIcommktOwinAuth.csproj">
-      <Project>{4532b2fe-2ba1-4fd0-ac42-ef6d04ee76a8}</Project>
-      <Name>OtherIcommktOwinAuth</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -344,9 +340,6 @@
     <EmbeddedResource Include="Migrations\201511302000415_addedURLParam_ImageCropData_Table.resx">
       <DependentUpon>201511302000415_addedURLParam_ImageCropData_Table.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

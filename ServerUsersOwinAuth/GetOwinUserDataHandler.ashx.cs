@@ -38,7 +38,6 @@ namespace ServerUsersOwinAuth
                     json = JsonConvert.SerializeObject(responseData);
                 }
             }
-
             context.Response.Write(json);
         }
 

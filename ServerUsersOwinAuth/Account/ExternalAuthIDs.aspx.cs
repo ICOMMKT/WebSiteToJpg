@@ -39,7 +39,6 @@ namespace ServerUsersOwinAuth.Account
             Guid g = Guid.NewGuid();
             string urlId = g.ToString();
             urlId = urlId.Replace("-", "");
-            //urlId = urlId.Replace("+", "");
 
             var authUrlitem = new ExternalAuthClients
             {
