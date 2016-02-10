@@ -1,7 +1,9 @@
-﻿using Microsoft.Owin.Infrastructure;
+﻿using Microsoft.Owin;
+using Microsoft.Owin.Infrastructure;
 using Microsoft.Owin.Logging;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Infrastructure;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +17,8 @@ namespace IcommktOwinAuth
     // Created by the factory in the DummyAuthenticationMiddleware class.
     class IcommktAuthenticationHandler : AuthenticationHandler<IcommktAuthenticationOptions>
     {
-        private const string TokenEndpoint = "http://jrbsag-thinkpc/acme/oauth2/access_token";
-        private const string GraphApiEndpoint = "http://jrbsag-thinkpc/acme/users";
+        private const string TokenEndpoint = "http://jrbsag-thinkpc/ServerUsersOwinAuth/oauth2/access_token";
+        private const string GraphApiEndpoint = "http://jrbsag-thinkpc/ServerUsersOwinAuth/users";
         private const string XmlSchemaString = "http://www.w3.org/2001/XMLSchema#string";
 
         private readonly ILogger _logger;
@@ -28,31 +30,73 @@ namespace IcommktOwinAuth
             _logger = logger;
         }
 
-        protected override Task<AuthenticationTicket> AuthenticateCoreAsync()
+        protected override async Task<AuthenticationTicket> AuthenticateCoreAsync()
         {
-            var error = Request.Query["error"];
-            var properties = Options.StateDataFormat.Unprotect(Request.Query["state"]);
-            var identity = new ClaimsIdentity(Options.SignInAsAuthenticationType);
-            AuthenticationTicket authTicket = null; 
-
-            if (string.IsNullOrEmpty(error))
+            AuthenticationTicket authTicket = null;
+            try
             {
-                // ASP.Net Identity requires the NameIdentitifer field to be set or it won't  
-                // accept the external login (AuthenticationManagerExtensions.GetExternalLoginInfo)
-                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, Options.UserId, null, Options.AuthenticationType));
-                identity.AddClaim(new Claim(ClaimTypes.Name, Options.UserName));
-                authTicket = new AuthenticationTicket(identity, properties);
+                _logger.WriteVerbose("AuthenticateCoreAsync");
+                //AuthenticationTicket authTicket = null;
+                string error = null, token = null, state = null;
+
+                IReadableStringCollection query = Request.Query;
+
+                IList<string> values = query.GetValues("error");
+                if (values != null && values.Count == 1)
+                {
+                    error = values[0];
+                }
+                values = query.GetValues("state");
+                if (values != null && values.Count == 1)
+                {
+                    state = values[0];
+                }
+                var properties = Options.StateDataFormat.Unprotect(state);
+                if (properties == null)
+                {
+                    return null;
+                }
+                values = query.GetValues("token");
+                if (values != null && values.Count == 1)
+                {
+                    token = values[0];
+                }
+                var graphUri = GraphApiEndpoint + "/" + Uri.EscapeDataString(token);
+                HttpResponseMessage graphResponse = await _httpClient.GetAsync(
+                    graphUri,  Request.CallCancelled);
+                graphResponse.EnsureSuccessStatusCode();
+                string accountString = await graphResponse.Content.ReadAsStringAsync();
+                JObject accountInformation = JObject.Parse(accountString);
+                var userman = accountInformation.Children()["id"];//["response"]["user"];
+                var user = accountInformation;
+                var context = new IcommktAuthenticatedContext(Context, user, token);
+                
+                var identity = new ClaimsIdentity(Options.SignInAsAuthenticationType);
+                
+                if (string.IsNullOrEmpty(error))
+                {
+                    // ASP.Net Identity requires the NameIdentitifer field to be set or it won't  
+                    // accept the external login (AuthenticationManagerExtensions.GetExternalLoginInfo)
+                    identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, context.Id, null, Options.AuthenticationType));
+                    identity.AddClaim(new Claim(ClaimTypes.Name, context.Email));
+                    identity.AddClaim(new Claim(ClaimTypes.Email, context.Email));
+                    authTicket = new AuthenticationTicket(identity, properties);
+                }
+                else
+                {
+                    Options.Error = error;
+                    var redirect = properties.RedirectUri;
+                    redirect = WebUtilities.AddQueryString(redirect, "error", "access_denied");
+
+                    Response.Redirect(redirect);
+                }
             }
-            else
+            catch(Exception ex)
             {
-                Options.Error = error;
-                var redirect = properties.RedirectUri;
-                redirect = WebUtilities.AddQueryString(redirect, "error", "access_denied");
-
-                Response.Redirect(redirect);
+                _logger.WriteWarning("Authentication failed", ex);
             }
-
-            return Task.FromResult(authTicket);
+           
+            return authTicket;
         }
 
         protected override Task ApplyResponseChallengeAsync()

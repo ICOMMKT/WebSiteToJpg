@@ -27,7 +27,7 @@ namespace ServerUsersOwinAuth.Account
                 grdVAuthLogins.DataSource = externalAuthClients;
                 grdVAuthLogins.DataBind();
             }
-
+            db.Dispose();
         }
 
         protected void btnCreate_Click(object sender, EventArgs e)
@@ -51,6 +51,7 @@ namespace ServerUsersOwinAuth.Account
             db.SaveChanges();
 
             Response.Redirect(Request.RawUrl);
+            db.Dispose();
         }
     }
 }

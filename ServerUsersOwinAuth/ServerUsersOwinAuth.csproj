@@ -48,6 +48,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -90,10 +94,6 @@
     <Reference Include="Antlr3.Runtime">
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <Private>True</Private>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Web.Optimization.WebForms">
       <Private>True</Private>
@@ -181,6 +181,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Account\Web.config" />
+    <Content Include="GetOwinUserDataHandler.ashx" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -216,7 +217,9 @@
     <Content Include="Global.asax" />
     <Content Include="Site.Master" />
     <Content Include="ViewSwitcher.ascx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Bundle.config" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
@@ -374,9 +377,14 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="GetOwinUserDataHandler.ashx.cs">
+      <DependentUpon>GetOwinUserDataHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Logic\DbActions.cs" />
+    <Compile Include="Logic\Utils.cs" />
     <Compile Include="Migrations\201601281346023_InitialCreate.cs" />
     <Compile Include="Migrations\201601281346023_InitialCreate.Designer.cs">
       <DependentUpon>201601281346023_InitialCreate.cs</DependentUpon>
@@ -404,6 +412,22 @@
     <Compile Include="Migrations\201602011800362_RelationshipsAdded.cs" />
     <Compile Include="Migrations\201602011800362_RelationshipsAdded.Designer.cs">
       <DependentUpon>201602011800362_RelationshipsAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602031523179_deletedStatusfromAuthTokens.cs" />
+    <Compile Include="Migrations\201602031523179_deletedStatusfromAuthTokens.Designer.cs">
+      <DependentUpon>201602031523179_deletedStatusfromAuthTokens.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602050157411_deletedAuthTokensTable.cs" />
+    <Compile Include="Migrations\201602050157411_deletedAuthTokensTable.Designer.cs">
+      <DependentUpon>201602050157411_deletedAuthTokensTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602071220117_AddnewfielAppsAccessGranted.cs" />
+    <Compile Include="Migrations\201602071220117_AddnewfielAppsAccessGranted.Designer.cs">
+      <DependentUpon>201602071220117_AddnewfielAppsAccessGranted.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201602072139587_modifiedNewField.cs" />
+    <Compile Include="Migrations\201602072139587_modifiedNewField.Designer.cs">
+      <DependentUpon>201602072139587_modifiedNewField.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ExternalAuthModels.cs" />
@@ -458,6 +482,18 @@
     <EmbeddedResource Include="Migrations\201602011800362_RelationshipsAdded.resx">
       <DependentUpon>201602011800362_RelationshipsAdded.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602031523179_deletedStatusfromAuthTokens.resx">
+      <DependentUpon>201602031523179_deletedStatusfromAuthTokens.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602050157411_deletedAuthTokensTable.resx">
+      <DependentUpon>201602050157411_deletedAuthTokensTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602071220117_AddnewfielAppsAccessGranted.resx">
+      <DependentUpon>201602071220117_AddnewfielAppsAccessGranted.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201602072139587_modifiedNewField.resx">
+      <DependentUpon>201602072139587_modifiedNewField.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -474,7 +510,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>4300</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://JRBSAG-THINKPC/acme</IISUrl>
+          <IISUrl>http://localhost/ServerUsersOwinAuth</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

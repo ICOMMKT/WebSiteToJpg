@@ -26,17 +26,17 @@ namespace ServerUsersOwinAuth.Models
             return Task.FromResult(GenerateUserIdentity(manager));
         }
     }
-
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    
+    public class UsersDbContext : IdentityDbContext<ApplicationUser>
     {
-        public ApplicationDbContext()
+        public UsersDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
         }
 
-        public static ApplicationDbContext Create()
+        public static UsersDbContext Create()
         {
-            return new ApplicationDbContext();
+            return new UsersDbContext();
         }
     }
 }

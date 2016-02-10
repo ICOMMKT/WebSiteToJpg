@@ -41,7 +41,7 @@ namespace GetWebSitesToJPG
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             app.UseDummyAuthentication(new DummyAuthenticationOptions("John Doe", "42"));
-            app.UseIcommkAuthentication(new IcommktAuthenticationOptions("cc0b91c0133d44bda65a98a1816cace8"));
+            app.UseIcommkAuthentication(new IcommktAuthenticationOptions("d6789dc3b9994146866b7c574390beae"));
         }
     }
 }

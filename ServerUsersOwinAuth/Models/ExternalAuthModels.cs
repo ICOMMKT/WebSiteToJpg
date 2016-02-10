@@ -8,7 +8,7 @@ using System.Data.Entity.Migrations;
 
 namespace ServerUsersOwinAuth.Models
 {
-    public class ExternalAuthClients
+    public partial class ExternalAuthClients
     {
         public string Id { get; set; }
         public string Url { get; set; }
@@ -16,24 +16,25 @@ namespace ServerUsersOwinAuth.Models
 
         public virtual ICollection<UsersAppsAccessGranted> UsersAppsAccessGranted { get; set; }
     }
-    public class AuthTokens
+
+    public partial class UsersAppsAccessGranted
     {
-        [Key]
-        public string Id { get; set; }
-        public string Token { get; set; }
-        public string Status { get; set; }
-        public string ExternalAuthClientsID { get; set; }
-
-        public virtual ExternalAuthClients ExternalAuthClients { get; set; }
-    }
-
-    public class UsersAppsAccessGranted {
         public int Id { get; set; }
         public string Userid { get; set; }
         public string ExternalAuthClientsID { get; set; }
         public bool AccessGranted { get; set; }
+        public string Token { get; set; }
+        public string Key { get; set; }
+        public DateTime? CreatedOn { get; set; }
 
         public virtual ICollection<ExternalAuthClients> ExternalAuthClients { get; set; }
+    }
+
+    public partial class TokenGranted
+    {
+        public bool GrantedAccess { get; set; }
+        public string Token { get; set; }
+        public string UserId { get; set; }
     }
 
     public class AppDBContext : DbContext
@@ -42,10 +43,16 @@ namespace ServerUsersOwinAuth.Models
         {
             Database.SetInitializer<AppDBContext>(null);
         }
+        //public static AppDBContext Create()
+       // {
+       //     return new AppDBContext();
+       // }
         public DbSet<ExternalAuthClients> ExternalAuthClients { get; set; }
 
-        public DbSet<AuthTokens> AuthTokens { get; set; }
+        //public DbSet<AuthTokens> AuthTokens { get; set; }
 
         public DbSet<UsersAppsAccessGranted> UsersAppsAccessGranted { get; set; }
     }
+
+    public class AppDBInitializer : DropCreateDatabaseIfModelChanges<AppDBContext> { }
 }

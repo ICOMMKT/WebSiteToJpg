@@ -13,6 +13,7 @@ namespace GetWebSitesToJPG___BackEnd
     public class GetImageHandler : IHttpHandler
     {
         public RequestContext RequestContext { get; set; }
+
         /// <summary>
         /// Return an image from the imageID param in RouteData value
         /// </summary>
