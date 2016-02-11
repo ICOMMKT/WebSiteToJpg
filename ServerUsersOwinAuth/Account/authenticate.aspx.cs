@@ -19,36 +19,62 @@ namespace PruebaOwinIconmkt.oauth
     public partial class authenticate : System.Web.UI.Page
     {     
         protected string AppName { get; set; }
-
+        private const string keyEncryptQueryString = "@2^2L9*u";
         //TODO: Encrypt connection through HTTPS
-        //TODO: Encrypt querystring
         protected async void Page_Load(object sender, EventArgs e)
         {
             if(!IsPostBack)
             {
-                var clientid = Request.QueryString["client_id"];
-                string redirectUri = Request.QueryString["redirect_uri"];
-                var state = Request.QueryString["state"];
+                //storage encrypted values
+                var id = Request.QueryString["id"];
+                string clientid = "", redirectUri = "", state = "";
+                //var cipher = new StringCipher();
 
-                if (clientid != null && redirectUri != null && state != null)
+                //if is not encrypted the value is empty
+                if (string.IsNullOrEmpty(id))
                 {
+                    clientid = Request.QueryString["client_id"];
+                    redirectUri = Uri.UnescapeDataString(Request.QueryString["redirect_uri"]).Trim();
+                    state = Request.QueryString["state"];
+                    if (clientid != null && redirectUri != null && state != null)
+                    {
+                        //Encrypt URL
+                        string[] urlSplit = Request.Url.ToString().Split('?');
+                        string encryptedstring = StringCipher.Encrypt(urlSplit[1], keyEncryptQueryString);
+                        var encriptedUrlSafe = HttpUtility.UrlEncode(encryptedstring);
+                        string urlEncrypted = urlSplit[0] + "?id=" + encriptedUrlSafe;
+                        HttpContext.Current.Response.Redirect(urlEncrypted, false);
+                    }
+                    else
+                    {
+                        LogForm.Visible = false;
+                        FailureText.Text = "Are you lost?... please go back to the home page";
+                        ErrorMessage.Visible = true;
+                    }                  
+                }
+                else
+                {
+                    hdn_Id.Value = id;
+                    //Decrypt values
+                    var _id = StringCipher.Decrypt(id.ToString(), keyEncryptQueryString);
+                    var arrValues = DecryptValues(_id);
+                    clientid = arrValues[0];
+                    redirectUri = arrValues[1];
+                    state = arrValues[2];
+
+
                     var dbAction = new DbActions();
                     var externalAppName = await dbAction.GetExternalAppName(clientid);
                     if (externalAppName != null)
                     {
                         AppName = externalAppName;
-                        //TODO: Encrypt hiddens data
-                        hdn_IdApp.Value = clientid;
-                        redirectUri = Uri.UnescapeDataString(redirectUri).Trim();
-                        hdn_redUri.Value = redirectUri;
-                        hdn_state.Value = state;                
                     }
                     if (User.Identity.IsAuthenticated)
                     {
                         var userid = User.Identity.GetUserId();
                         var tokenGranted = await dbAction.AreGrantedPermissionsAsync(userid);
-                        if(tokenGranted != null)
-                        { 
+                        if (tokenGranted != null)
+                        {
                             if (tokenGranted.GrantedAccess)
                             {
                                 redirectUri = WebUtilities.AddQueryString(redirectUri, "token", tokenGranted.Token);
@@ -60,12 +86,6 @@ namespace PruebaOwinIconmkt.oauth
                         AuthPrompt.Visible = true;
                         ErrorMessage.Visible = true;
                     }
-                }
-                else
-                {
-                    LogForm.Visible = false;
-                    FailureText.Text = "Are you lost?... please go back to the home page";
-                    ErrorMessage.Visible = true;
                 }
             }
         }
@@ -107,8 +127,12 @@ namespace PruebaOwinIconmkt.oauth
 
         protected void DenyAccess(object sender, EventArgs e)
         {
-            string redirectUri = hdn_redUri.Value;
-            var state = hdn_state.Value;
+            var id = hdn_Id.Value;
+            //Decrypt values
+            var _id = StringCipher.Decrypt(id.ToString(), keyEncryptQueryString);
+            var arrValues = DecryptValues(_id);
+            string redirectUri = arrValues[1];
+            string state = arrValues[2];
 
             if (!string.IsNullOrEmpty((redirectUri)))
             {
@@ -118,16 +142,20 @@ namespace PruebaOwinIconmkt.oauth
         }
 
         [WebMethod(EnableSession = false)]
-        public static string AllowAccess(string idApp, string redirectUri, string state)
+        public static string AllowAccess(string id)
         {
-            //TODO: UnEncrypt data from parameters
             string json = String.Empty;
-            if (!string.IsNullOrEmpty(idApp))
+            if (!string.IsNullOrEmpty(id))
             {
                 var page = new authenticate();
                 var userid = page.User.Identity.GetUserId();
 
-                var _idApp = idApp;
+                //Decrypt values
+                var _id = StringCipher.Decrypt(id.ToString(), keyEncryptQueryString);
+                var arrValues = page.DecryptValues(_id);
+                string clientid = arrValues[0];
+                string redirectUri = arrValues[1];
+                string state = arrValues[2];
 
                 var time = DateTime.UtcNow;
                 byte[] timeByteArray = BitConverter.GetBytes(time.ToBinary());
@@ -138,7 +166,7 @@ namespace PruebaOwinIconmkt.oauth
                 var usersAppsAccessGranted = new UsersAppsAccessGranted
                 {
                     Userid = userid,
-                    ExternalAuthClientsID = _idApp,
+                    ExternalAuthClientsID = clientid,
                     AccessGranted = true,
                     Key = key.ToString(),
                     Token = token,
@@ -152,12 +180,30 @@ namespace PruebaOwinIconmkt.oauth
                 {
                     Token = token,
                     RedirectUri = redirectUri,
-                    State = state 
+                    State = state
                 };
 
-                json  = JsonConvert.SerializeObject(returnData);
+                json = JsonConvert.SerializeObject(returnData);
             }
             return json;
+        }
+
+        public List<string> DecryptValues(string id)
+        {
+            var valuesReturned = new List<string>();
+            string[] arrQuery = id.Split('&');
+            string[] arrQueryValues;
+
+            arrQueryValues = arrQuery[0].Split('=');
+            valuesReturned.Add(arrQueryValues[1].Trim());
+
+            arrQueryValues = arrQuery[1].Split('=');
+            valuesReturned.Add(Uri.UnescapeDataString(arrQueryValues[1]).Trim());
+
+            arrQueryValues = arrQuery[2].Split('=');
+            valuesReturned.Add(arrQueryValues[1].Trim());
+
+            return valuesReturned;
         }
     }
 }

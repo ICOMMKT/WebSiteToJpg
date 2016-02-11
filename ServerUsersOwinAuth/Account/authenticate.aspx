@@ -27,19 +27,15 @@
             <asp:Button Text="Deny" CssClass="btn" OnClick="DenyAccess" ID="btnDeny" runat="server"/><button type="button" style="margin-left:20px;" class="btn btnAllow"> Allow</button>
         </div>
     </asp:PlaceHolder>
-    <asp:HiddenField ID="hdn_IdApp" runat="server" />
-    <asp:HiddenField ID="hdn_redUri" runat="server" />
-    <asp:HiddenField ID="hdn_state" runat="server" />
+    <asp:HiddenField ID="hdn_Id" runat="server" />
     <script>
         $(document).ready(function () {
             $('.btnAllow').click(function () {
-                var idApp = $('#MainContent_hdn_IdApp').val();
-                var redirectUri = $('#MainContent_hdn_redUri').val();
-                var state = $('#MainContent_hdn_state').val();;
+                var id = $('#MainContent_hdn_Id').val();
                 $.ajax({
                     type: "POST",
                     url: "authenticate.aspx/AllowAccess",
-                    data: "{idApp:'" + idApp + "', redirectUri:'"+ redirectUri +"', state: '" + state + "'}",
+                    data: "{id:'" + id + "'}",
                     contentType: "application/json",
                     dataType: "json",
                     success: function (msg) {
